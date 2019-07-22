@@ -1,6 +1,6 @@
 package tfm
 
-import org.apache.spark.sql.{DataFrame, SparkSession}
+import org.apache.spark.sql.{DataFrame, SaveMode, SparkSession}
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.ml.evaluation.RegressionEvaluator
 import org.apache.spark.ml.feature.{StringIndexer, VectorAssembler}
@@ -20,6 +20,7 @@ object App {
     val spark = SparkSession
       .builder()
       .master("local[*]")
+      .enableHiveSupport()
       .getOrCreate()
 
 
@@ -30,9 +31,15 @@ object App {
 
     //val df = dfInput.select(dfInput("Keyword"))
 
+    dfInput.write.mode(SaveMode.Overwrite).saveAsTable("tablaDatosTfm")
+
+
+
+
+
     dfInput.show(false )
 
-    mlTest()
+    //mlTest()
 
 
 
