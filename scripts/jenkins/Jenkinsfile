@@ -23,7 +23,7 @@ node {
      sh """
        cd scripts/azure/storage/
        ls -la
-       az login -u xikanowey@yahoo.es -p CaCahue2008
+       az login --service-principal -u http://ServiceTestJenkins --password 2366f72d-73e1-47f5-bedd-9b2ca47f9b82 --tenant 50140386-fd10-4b25-8169-e67b2b0b2017
        ./deploy.sh -i 5a08e9e0-83ee-4188-8fc2-18e16c7db524 -g resourceGroup -n desplieguePrueba -l westeurope
      """
    }
