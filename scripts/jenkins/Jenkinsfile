@@ -23,6 +23,7 @@ node {
      sh """
        cd scripts/azure/storage/
        ls -la
+       az login -u xikanowey@yahoo.es -p CaCahue2008
        ./deploy.sh -i 5a08e9e0-83ee-4188-8fc2-18e16c7db524 -g resourceGroup -n desplieguePrueba -l westeurope
      """
    }
