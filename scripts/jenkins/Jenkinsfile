@@ -21,6 +21,7 @@ node {
    }
    stage('Creation Azure Storage'){
       sh 'cd scripts/azure/storage/'
+      sh 'ls -la'
       sh 'deploy.sh -i 5a08e9e0-83ee-4188-8fc2-18e16c7db524 -g resourceGroup -n desplieguePrueba -l westeurope'
    }
    stage('Results') {
