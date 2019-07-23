@@ -11,7 +11,7 @@ node {
         // ** NOTE: This 'M3' Maven tool must be configured
         // **       in the global configuration.
         git branch: 'master',
-        credentialsId: '518756c3-6847-492c-b641-3f1e0bd59647',
+        credentialsId: '99b6e8c5-14d1-499e-abcb-f69833c44057',
         url: 'https://gitlab.com/rortizrojo/tfm-spark.git'
     }
     stage('Build') {
