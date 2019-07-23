@@ -1,6 +1,6 @@
 node {
     def mvnHome = tool 'M3'
-    def nombre_cuenta = 'cuentaalmacenamientoazure'
+    def nombre_cuenta = 'cuentaalmacenamientotfm2'
     def id_suscripcion = '5a08e9e0-83ee-4188-8fc2-18e16c7db524'
     def grupo_recursos = 'grupoRecursosNuevo'
 
