@@ -6,7 +6,7 @@
             "value": "westeurope"
         },
         "storageAccountName": {
-            "value": "cuentaalmacenamientoazure"
+            "value": "cuentaazure"
         },
         "accountType": {
             "value": "Standard_RAGRS"
