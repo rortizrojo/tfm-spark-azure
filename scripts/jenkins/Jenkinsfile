@@ -34,6 +34,7 @@ node {
     stage('Subida de fichero'){
 
         sh """
+            cd scripts/azure/storage/
             az storage account keys list --account-name ${nombre_cuenta} > ficheroKeys
             keyStorage=\$(python3 parserKeyStorage.py ficheroKeys)
 
