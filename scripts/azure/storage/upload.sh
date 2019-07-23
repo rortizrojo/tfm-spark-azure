@@ -2,7 +2,7 @@
 # A simple Azure Storage example script
 
 export AZURE_STORAGE_ACCOUNT=cuentaalmacenamientotfm
-export AZURE_STORAGE_KEY=<storage_account_key>
+export AZURE_STORAGE_KEY=$0
 
 export container_name=contenedor_datos
 export blob_name=nombre_blob
