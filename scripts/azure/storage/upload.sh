@@ -1,8 +1,8 @@
 #!/bin/bash
 # A simple Azure Storage example script
 
-export AZURE_STORAGE_ACCOUNT=cuentaazure
-export AZURE_STORAGE_KEY=$0
+export AZURE_STORAGE_ACCOUNT=$0
+export AZURE_STORAGE_KEY=$1
 
 export container_name=contenedor_datos
 export blob_name=nombre_blob
