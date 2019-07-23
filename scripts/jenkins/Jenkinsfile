@@ -37,7 +37,9 @@ node {
             cd scripts/azure/storage/
             az storage account keys list --account-name ${nombre_cuenta} > ficheroKeys
             keyStorage=\$(python3 parserKeyStorage.py ficheroKeys)
-            ./upload.sh ${nombre_cuenta} keyStorage
+            echo ${nombre_cuenta}
+            echo $keyStorage
+            ./upload.sh ${nombre_cuenta} $keyStorage
         """
     }
     stage('Results') {
