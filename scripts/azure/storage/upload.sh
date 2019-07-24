@@ -6,22 +6,36 @@ export AZURE_STORAGE_KEY=$2
 
 export container_name=contenedordatos2
 export blob_name=nombre_blob
-export file_to_upload=MuestraDatos.csv
-export destination_file=muestraSubido.csv
+export file_to_upload=$3
+export destination_file=$4
 
 
-sas_token=$(az storage account generate-sas --account-key $AZURE_STORAGE_KEY --account-name $AZURE_STORAGE_ACCOUNT --expiry 2020-01-01 --https-only --permissions acuw --resource-types co --services bfqt)
+end=`date -d "1 year" '+%Y-%m-%dT%H:%M:%SZ'`
+echo "Expire time: $end"
+sas_token=$(az storage account generate-sas --permissions rwdlacup --account-name $AZURE_STORAGE_ACCOUNT --services bfqt --resource-types sco --expiry $end -otsv)
+#sas_token=$(az storage account generate-sas --account-key $AZURE_STORAGE_KEY --account-name $AZURE_STORAGE_ACCOUNT --expiry $end -otsv --permissions rwdlacup --resource-types co --services bfqt)
 
 echo "Creating the container...$container_name"
-url=https://$AZURE_STORAGE_ACCOUNT.dfs.core.windows.net/$container_name?$sas_token
+container_url=https://$AZURE_STORAGE_ACCOUNT.dfs.core.windows.net/$container_name
+echo "Container: $container_url"
+container_url_sas=$container_url?$sas_token
 
-url="${url//\"/}"
-echo $url
-azcopy make $url
 
-azcopy copy "../../../input/MuestraDatos.csv" $url --recursive=true
+container_url_sas_clean="${container_url_sas//\"/}"
+echo "Container clean: $container_url_sas_clean"
+azcopy make $container_url_sas_clean
+
+
+
+file_name=$container_url/$destination_file?$sas_token
+file_url="${file_name//\"/}"
+echo "File clean: $file_url"
+azcopy copy $file_to_upload $file_url --recursive=true
 
 #
+
+
+
 #az storage container create --name $container_name
 #
 #echo "Uploading the file..."

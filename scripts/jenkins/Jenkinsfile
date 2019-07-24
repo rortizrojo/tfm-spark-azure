@@ -40,7 +40,7 @@ node {
             keyStorage=`python3 parserKeyStorage.py ficheroKeys`
             echo "Nombre Cuenta: $nombre_cuenta"
             echo "KeyStorage: \$keyStorage"
-            ./upload.sh $nombre_cuenta \$keyStorage
+            ./upload.sh $nombre_cuenta \$keyStorage ../../../input/MuestraDatos.csv muestraSubido.csv
         """
     }
     stage('Results') {
