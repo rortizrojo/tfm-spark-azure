@@ -31,17 +31,6 @@ node {
             ./deploy.sh -i ${id_suscripcion} -g ${grupo_recursos} -n desplieguePrueba -l westeurope
         """
     }
-    stage('Subida de fichero'){
-
-        sh """
-            cd scripts/azure/storage/
-//            az storage account keys list --account-name ${nombre_cuenta} > ficheroKeys
-//            keyStorage=\$(python3 parserKeyStorage.py ficheroKeys)
-//            echo "Nombre Cuenta: ${nombre_cuenta}"
-//            echo "KeyStorage: $keyStorage"
-//            ./upload.sh ${nombre_cuenta} $keyStorage
-        """
-    }
     stage('Results') {
         junit '**/target/surefire-reports/TEST-*.xml'
         archiveArtifacts 'target/*.jar'
