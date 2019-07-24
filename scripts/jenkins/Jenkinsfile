@@ -34,8 +34,13 @@ node {
     stage('Subida de fichero'){
         sh """
             cd scripts/azure/storage/
+            ls -la
             az storage account keys list --account-name $nombre_cuenta > ficheroKeys
-            prueba=`python3 parserKeyStorage.py ficheroKeys`
+            cat ficheroKeys
+            keyStorage=`python3 parserKeyStorage.py ficheroKeys`
+            echo "Nombre Cuenta: $nombre_cuenta"
+            echo "KeyStorage: \$keyStorage"
+            ./upload.sh $nombre_cuenta \$keyStorage
         """
     }
     stage('Results') {
