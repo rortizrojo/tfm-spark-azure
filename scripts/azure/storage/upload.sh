@@ -4,7 +4,7 @@
 export AZURE_STORAGE_ACCOUNT=$1
 export AZURE_STORAGE_KEY=$2
 
-export container_name=contenedordatos1
+export container_name=contenedordatos2
 export blob_name=nombre_blob
 export file_to_upload=MuestraDatos.csv
 export destination_file=muestraSubido.csv
@@ -17,7 +17,7 @@ url=https://$AZURE_STORAGE_ACCOUNT.dfs.core.windows.net/$container_name?$sas_tok
 
 url="${url//\"/}"
 echo $url
-./azcopy make $url
+azcopy make $url
 
 
 
