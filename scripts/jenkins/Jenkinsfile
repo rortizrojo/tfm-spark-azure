@@ -36,6 +36,8 @@ node {
             cd scripts/azure/storage/
             ls -la
             az storage account keys list --account-name $nombre_cuenta > ficheroKeys
+            cat ficheroKeys
+            python3 parserKeyStorage.py ficheroKeys
         """
     }
     stage('Results') {
