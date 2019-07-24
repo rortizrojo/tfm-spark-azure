@@ -19,7 +19,7 @@ url="${url//\"/}"
 echo $url
 azcopy make $url
 
-
+azcopy copy "input/MuestraDatos.csv" "https://$AZURE_STORAGE_ACCOUNT.dfs.core.windows.net/$container_name" --recursive=true
 
 #
 #az storage container create --name $container_name
