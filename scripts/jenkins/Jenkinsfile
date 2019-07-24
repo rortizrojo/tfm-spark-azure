@@ -35,7 +35,7 @@ node {
         sh """
             cd scripts/azure/storage/
             ls -la
-            az storage account keys list --account-name ${nombre_cuenta} > ficheroKeys
+            az storage account keys list --account-name $nombre_cuenta > ficheroKeys
         """
     }
     stage('Results') {
