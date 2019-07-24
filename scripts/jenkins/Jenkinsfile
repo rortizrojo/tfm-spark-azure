@@ -38,7 +38,6 @@ node {
             az storage account keys list --account-name $nombre_cuenta > ficheroKeys
             cat ficheroKeys
             echo "Nombre Cuenta: $nombre_cuenta"
-            prueba=`python3 parserKeyStorage.py ficheroKeys`
         """
     }
     stage('Results') {
