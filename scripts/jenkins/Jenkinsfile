@@ -14,16 +14,16 @@ node {
                 credentialsId: 'f30cf8ec-04bd-4002-89ac-8aaeeb7a1df8',
                 url: 'https://gitlab.com/rortizrojo/tfm-spark.git'
     }
-    stage('Build') {
-        // Run the maven build
-        withEnv(["MVN_HOME=$mvnHome"]) {
-            if (isUnix()) {
-                sh '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore clean package'
-            } else {
-                bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean package/)
-            }
-        }
-    }
+//    stage('Build') {
+//        // Run the maven build
+//        withEnv(["MVN_HOME=$mvnHome"]) {
+//            if (isUnix()) {
+//                sh '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore clean package'
+//            } else {
+//                bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean package/)
+//            }
+//        }
+//    }
     stage('Creation Azure Storage'){
         sh """
             cd scripts/azure/storage/
@@ -34,10 +34,8 @@ node {
     stage('Subida de fichero'){
         sh """
             cd scripts/azure/storage/
-            ls -la
             az storage account keys list --account-name $nombre_cuenta > ficheroKeys
-            cat ficheroKeys
-            echo "Nombre Cuenta: $nombre_cuenta"
+            prueba=`python3 parserKeyStorage.py ficheroKeys`
         """
     }
     stage('Results') {
