@@ -19,7 +19,7 @@ url="${url//\"/}"
 echo $url
 azcopy make $url
 
-azcopy copy "input/MuestraDatos.csv" $url --recursive=true
+azcopy copy "../../../input/MuestraDatos.csv" $url --recursive=true
 
 #
 #az storage container create --name $container_name
