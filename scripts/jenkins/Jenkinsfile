@@ -31,6 +31,12 @@ node {
             ./deploy.sh -i ${id_suscripcion} -g ${grupo_recursos} -n desplieguePrueba -l westeurope
         """
     }
+    stage('Subida de fichero'){
+        sh """
+            cd scripts/azure/storage/
+            ls -la
+        """
+    }
     stage('Results') {
         junit '**/target/surefire-reports/TEST-*.xml'
         archiveArtifacts 'target/*.jar'
