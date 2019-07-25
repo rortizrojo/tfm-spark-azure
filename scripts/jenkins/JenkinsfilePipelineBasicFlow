@@ -43,16 +43,6 @@ node {
             ./upload.sh $nombre_cuenta \$keyStorage ../../../input/MuestraDatos.csv muestraSubido.csv
         """
     }
-    stage('Creación del cluster'){
-        sh """
-            cd scripts/azure/cluster/
-            //keyStorage=`python3 parserKeyStorage.py ficheroKeys`
-            //./deploy.sh -i ${id_suscripcion} -g ${grupo_recursos} -n desplieguePrueba -l westeurope
-        """
-    }
-
-
-
     stage('Results') {
         junit '**/target/surefire-reports/TEST-*.xml'
         archiveArtifacts 'target/*.jar'
