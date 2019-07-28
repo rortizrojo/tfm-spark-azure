@@ -6,7 +6,7 @@ node {
         credentialsId: 'gitlab-credentials',
         url: 'https://gitlab.com/rortizrojo/tfm-spark.git'
     }
-    stage('Test Maven ') {
+    stage('Test Maven') {
         // Run the maven build
         withEnv(["MVN_HOME=$mvnHome"]) {
             if (isUnix()) {
