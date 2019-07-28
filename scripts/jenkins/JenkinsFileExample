@@ -1,0 +1,8 @@
+node {
+    stage('Preparation') { // for display purposes
+        // Get some code from a GitHub repository
+        git branch: 'master',
+        credentialsId: 'git-jenkins',
+        url: 'https://gitlab.com/rortizrojo/tfm-spark.git'
+    }
+}
