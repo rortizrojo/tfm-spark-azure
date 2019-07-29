@@ -15,6 +15,7 @@ node {
         sh """
             cd scripts/azure/cluster/
             az login --service-principal -u http://ServiceTestJenkins --password 2366f72d-73e1-47f5-bedd-9b2ca47f9b82 --tenant 50140386-fd10-4b25-8169-e67b2b0b2017
+            sudo chmod +x deploy.sh           
             ./deploy.sh -i ${id_suscripcion} -g ${grupo_recursos} -n desplieguePrueba -l westeurope
         """
     }
