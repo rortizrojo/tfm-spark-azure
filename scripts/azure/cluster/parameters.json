@@ -9,7 +9,7 @@
             "value": "admin"
         },
         "clusterLoginPassword": {
-            "value": null
+            "value": "tfmPassword2019"
         },
         "location": {
             "value": "westeurope"
