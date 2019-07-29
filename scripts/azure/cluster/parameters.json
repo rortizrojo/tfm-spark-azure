@@ -27,7 +27,7 @@
             "value": "sshuser"
         },
         "sshPassword": {
-            "value": null
+            "value": "tfmPassword2019"
         }
     }
 }
