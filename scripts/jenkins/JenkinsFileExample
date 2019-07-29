@@ -4,7 +4,7 @@ node {
         // Get some code from a GitHub repository
         git branch: 'master',
         credentialsId: 'gitlab-credentials',
-        url: 'https://gitlab.com/rortizrojo/tfm-spark.git'
+        url: 'https://gitlab.com/rortizrojo/tfm-spark-azure.git'
     }
     stage('Test Maven') {
         // Run the maven build
