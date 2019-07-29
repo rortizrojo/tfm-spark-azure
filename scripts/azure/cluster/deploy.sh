@@ -8,6 +8,7 @@ IFS=$'\n\t'
 
 usage() { echo "Usage: $0 -i <subscriptionId> -g <resourceGroupName> -n <deploymentName> -l <resourceGroupLocation>" 1>&2; exit 1; }
 
+
 declare subscriptionId=""
 declare resourceGroupName=""
 declare deploymentName=""
