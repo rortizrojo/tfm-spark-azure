@@ -37,7 +37,7 @@
         },
         "clusterWorkerNodeCount": {
             "type": "int",
-            "defaultValue": 2,
+            "defaultValue": 4,
             "metadata": {
                 "description": "The number of nodes in the HDInsight cluster."
             }
@@ -90,10 +90,11 @@
                 "storageProfile": {
                     "storageaccounts": [
                         {
-                            "name": "cuentaalmacenamientotfm2.blob.core.windows.net",
+                            "name": "otracuentadeprueba.dfs.core.windows.net",
                             "isDefault": true,
-                            "container": "contenedordatos2",
-                            "key": "[listKeys('/subscriptions/5a08e9e0-83ee-4188-8fc2-18e16c7db524/resourceGroups/grupoRecursosNuevo/providers/Microsoft.Storage/storageAccounts/cuentaalmacenamientotfm2', '2015-05-01-preview').key1]"
+                            "fileSystem": "sdafasdf-2019-07-30t20-24-31-459z",
+                            "resourceId": "/subscriptions/5a08e9e0-83ee-4188-8fc2-18e16c7db524/resourceGroups/grupoRecursosTest29Julio/providers/Microsoft.Storage/storageAccounts/otracuentadeprueba",
+                            "msiResourceId": "/subscriptions/5a08e9e0-83ee-4188-8fc2-18e16c7db524/resourcegroups/grupoRecursosTest29Julio/providers/Microsoft.ManagedIdentity/userAssignedIdentities/Usuario29Julio"
                         }
                     ]
                 },
@@ -120,9 +121,9 @@
                         {
                             "autoscale": null,
                             "name": "workernode",
-                            "targetInstanceCount": 2,
+                            "targetInstanceCount": 4,
                             "hardwareProfile": {
-                                "vmSize": "Standard_D12_V2"
+                                "vmSize": "Standard_D13_V2"
                             },
                             "osProfile": {
                                 "linuxOperatingSystemProfile": {
@@ -135,6 +136,12 @@
                             "dataDisksGroups": null
                         }
                     ]
+                }
+            },
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "/subscriptions/5a08e9e0-83ee-4188-8fc2-18e16c7db524/resourcegroups/grupoRecursosTest29Julio/providers/Microsoft.ManagedIdentity/userAssignedIdentities/Usuario29Julio": {}
                 }
             }
         }

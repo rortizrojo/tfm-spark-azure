@@ -10,7 +10,6 @@ def modify(args):
 
 
         # Cluster identity parameters
-        data['resources'][0]['identity']['type']=args.identity # <--- add `id` value.
         data['resources'][0]['identity']['userAssignedIdentities']={ args.userAssignedIdentities: {}}
 
 
@@ -18,6 +17,7 @@ def modify(args):
         data['resources'][0]['properties']['storageProfile']['storageaccounts'][0]['name']=args.storageName + ".dfs.core.windows.net"
         data['resources'][0]['properties']['storageProfile']['storageaccounts'][0]['resourceId']=args.storageId
         data['resources'][0]['properties']['storageProfile']['storageaccounts'][0]['msiResourceId']=args.userAssignedIdentities
+        data['resources'][0]['properties']['storageProfile']['storageaccounts'][0]['fileSystem']=args.container
 
 
         f.seek(0)        # <--- should reset file position to the beginning.
@@ -31,10 +31,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument('-cf', '--clusterFile')
-    parser.add_argument('-i', '--identity')
     parser.add_argument('-ua', '--userAssignedIdentities')
     parser.add_argument('-si', '--storageId')
     parser.add_argument('-sn', '--storageName')
+    parser.add_argument('-c', '--container')
 
     #parser.add_argument('-v', dest='verbose', action='store_true')
     args = parser.parse_args()
