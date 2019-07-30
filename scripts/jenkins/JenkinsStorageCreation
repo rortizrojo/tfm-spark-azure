@@ -1,5 +1,5 @@
 node {
-    def nombre_cuenta = 'otraCuentaPrueba'
+    def nombre_cuenta = 'otra-cuenta-de-prueba'
     def nombre_usuario = 'Usuario29Julio'
     def id_suscripcion = '5a08e9e0-83ee-4188-8fc2-18e16c7db524'
     def grupo_recursos = 'grupoRecursosTest29Julio'
