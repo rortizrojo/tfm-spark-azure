@@ -31,7 +31,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
     parser.add_argument('-cf', '--clusterFile')
-    parser.add_argument('-ua', '--userAssignedIdentities')
+    parser.add_argument('-uai', '--userAssignedIdentities')
     parser.add_argument('-si', '--storageId')
     parser.add_argument('-sn', '--storageName')
     parser.add_argument('-c', '--container')
