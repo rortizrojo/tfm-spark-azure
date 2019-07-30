@@ -93,7 +93,7 @@
                             "name": "cuentaalmacenamientotfm2.blob.core.windows.net",
                             "isDefault": true,
                             "container": "contenedordatos2",
-                            "key": "9T79UsR2jLE9NiuSXtKEtewrMMFnzqmmMGH1OcRhXVt6uub/hJ2EFmQvldQJjwG6Zv+SykdSdlPoMjN7pdIaag=="
+                            "key": "[listKeys('/subscriptions/5a08e9e0-83ee-4188-8fc2-18e16c7db524/resourceGroups/grupoRecursosNuevo/providers/Microsoft.Storage/storageAccounts/cuentaalmacenamientotfm2', '2015-05-01-preview').key1]"
                         }
                     ]
                 },
