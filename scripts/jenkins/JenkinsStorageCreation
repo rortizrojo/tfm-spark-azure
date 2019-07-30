@@ -13,7 +13,7 @@ node {
     {
         sh """
             cd scripts/azure/
-            python3 modifyStorageParameters.py -sf parameters.json -sn ${nombre_cuenta} 
+            python3 modifyStorageParameters.py -sf storage/parameters.json -sn ${nombre_cuenta} 
         """
     }
 

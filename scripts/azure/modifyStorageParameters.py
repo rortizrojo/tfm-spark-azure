@@ -5,7 +5,7 @@ def modify(args):
 
     print(args)
 
-    with open(args.storageName, 'r+') as f:
+    with open(args.storageFile, 'r+') as f:
         data = json.load(f)
         data['parameters']['storageAccountName']['value']=args.storageName # <--- add `id` value.
 
@@ -15,7 +15,7 @@ def modify(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-sf', '--file')
+    parser.add_argument('-sf', '--storageFile')
     parser.add_argument('-sn', '--storageName')
 
     #parser.add_argument('-v', dest='verbose', action='store_true')
