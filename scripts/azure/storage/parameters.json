@@ -6,7 +6,7 @@
             "value": "westeurope"
         },
         "storageAccountName": {
-            "value": "cuentaalmacenamientotfm2"
+            "value": "nuevoNombre"
         },
         "accountType": {
             "value": "Standard_RAGRS"
