@@ -9,10 +9,10 @@
             "value": "nuevoNombre"
         },
         "accountType": {
-            "value": "Standard_RAGRS"
+            "value": "Standard_LRS"
         },
         "kind": {
-            "value": "StorageV2"
+            "value": "BlobStorage"
         },
         "accessTier": {
             "value": "Hot"
