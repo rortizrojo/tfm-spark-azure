@@ -19,6 +19,6 @@
         },
         "supportsHttpsTrafficOnly": {
             "value": true
-        },
+        }
     }
 }
