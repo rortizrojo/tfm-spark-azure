@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "clusterName": {
-            "value": "cluster-version-final"
+            "value": "asdfasdfasdf"
         },
         "clusterLoginUserName": {
             "value": "admin"
