@@ -12,7 +12,7 @@
             "value": "Standard_LRS"
         },
         "kind": {
-            "value": "BlobStorage"
+            "value": "Storage"
         },
         "accessTier": {
             "value": "Hot"
@@ -20,8 +20,5 @@
         "supportsHttpsTrafficOnly": {
             "value": true
         },
-        "isHnsEnabled": {
-            "value": true
-        }
     }
 }
