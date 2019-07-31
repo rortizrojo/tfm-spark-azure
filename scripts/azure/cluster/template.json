@@ -90,10 +90,11 @@
                 "storageProfile": {
                     "storageaccounts": [
                         {
-                            "name": "otracuentadeprueba.blob.core.windows.net",
+                            "name": "asdfasdfasdfaaaa.dfs.core.windows.net",
                             "isDefault": true,
-                            "container": "asdfasdfasdf-2019-07-31t11-00-07-876z",
-                            "key": "[listKeys('/subscriptions/5a08e9e0-83ee-4188-8fc2-18e16c7db524/resourceGroups/grupoRecursosTest29Julio/providers/Microsoft.Storage/storageAccounts/otracuentadeprueba', '2015-05-01-preview').key1]"
+                            "fileSystem": "filesystem",
+                            "resourceId": "/subscriptions/5a08e9e0-83ee-4188-8fc2-18e16c7db524/resourceGroups/asdfasdf/providers/Microsoft.Storage/storageAccounts/asdfasdfasdfaaaa",
+                            "msiResourceId": "/subscriptions/5a08e9e0-83ee-4188-8fc2-18e16c7db524/resourcegroups/asdfasdf/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user"
                         }
                     ]
                 },
@@ -135,6 +136,12 @@
                             "dataDisksGroups": null
                         }
                     ]
+                }
+            },
+            "identity": {
+                "type": "UserAssigned",
+                "userAssignedIdentities": {
+                    "/subscriptions/5a08e9e0-83ee-4188-8fc2-18e16c7db524/resourcegroups/asdfasdf/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user": {}
                 }
             }
         }

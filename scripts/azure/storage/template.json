@@ -14,7 +14,13 @@
         "kind": {
             "type": "string"
         },
+        "accessTier": {
+            "type": "string"
+        },
         "supportsHttpsTrafficOnly": {
+            "type": "bool"
+        },
+        "isHnsEnabled": {
             "type": "bool"
         }
     },
@@ -26,7 +32,9 @@
             "apiVersion": "2019-04-01",
             "location": "[parameters('location')]",
             "properties": {
-                "supportsHttpsTrafficOnly": "[parameters('supportsHttpsTrafficOnly')]"
+                "accessTier": "[parameters('accessTier')]",
+                "supportsHttpsTrafficOnly": "[parameters('supportsHttpsTrafficOnly')]",
+                "isHnsEnabled": "[parameters('isHnsEnabled')]"
             },
             "dependsOn": [],
             "sku": {
