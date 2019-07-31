@@ -1,10 +1,10 @@
 node {
     def nombre_cuenta = 'otracuentadeprueba'
-    def nombre_usuario = 'Usuario29Julio'
+    def nombre_usuario = 'Usuario30Julio'
     def id_suscripcion = '5a08e9e0-83ee-4188-8fc2-18e16c7db524'
-    def grupo_recursos = 'grupoRecursosTest29Julio'
+    def grupo_recursos = 'grupoRecursosTest30Julio'
     def contenedor = 'contenedoralmacenamiento'
-    def nombre_cluster = 'cluster-tfm'
+    def nombre_cluster = 'cluster-tfm-30-07-2019'
 
     stage('Preparation') { // for display purposes
         git branch: 'master',
@@ -26,25 +26,21 @@ node {
             az login --service-principal -u http://ServiceTestJenkins --password 2366f72d-73e1-47f5-bedd-9b2ca47f9b82 --tenant 50140386-fd10-4b25-8169-e67b2b0b2017
             ./deploy.sh -i ${id_suscripcion} -g ${grupo_recursos} -n desplieguePrueba -l westeurope 
             idStorageResource=`cat resourceId | jq -r ".properties.outputResources[0].id"`
-            echo "Id Storage Resource: \$idStorageResource"
             az identity create -g  ${grupo_recursos} -n ${nombre_usuario} > identity
             idUsuario=`cat identity | jq -r ".principalId"`
-            echo "idUsuario: \$idUsuario"
             az role assignment create --role "Storage Blob Data Owner" --assignee-object-id \$idUsuario --scope \$idStorageResource
         """
     }
-    stage('Subida de fichero'){
-        sh """
-            cd scripts/azure/storage/
-            ls -la
-            az storage account keys list --account-name $nombre_cuenta > ficheroKeys
-            cat ficheroKeys
-            keyStorage=`python3 parserKeyStorage.py ficheroKeys`
-            echo "Nombre Cuenta: $nombre_cuenta"
-            echo "KeyStorage: \$keyStorage"
-            ./upload.sh $nombre_cuenta \$keyStorage $contenedor ../../../input/MuestraDatos.csv muestraSubido.csv
-        """
-    }
+//    stage('Subida de fichero'){
+//        sh """
+//            cd scripts/azure/storage/
+//            ls -la
+//            az storage account keys list --account-name $nombre_cuenta > ficheroKeys
+//            cat ficheroKeys
+//            keyStorage=`python3 parserKeyStorage.py ficheroKeys`
+//            ./upload.sh $nombre_cuenta \$keyStorage $contenedor ../../../input/MuestraDatos.csv muestraSubido.csv
+//        """
+//    }
     stage('Creation Azure HDInsight Cluster'){
         sh """
             cd scripts/azure
