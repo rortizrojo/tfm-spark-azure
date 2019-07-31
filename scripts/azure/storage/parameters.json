@@ -14,9 +14,6 @@
         "kind": {
             "value": "Storage"
         },
-        "accessTier": {
-            "value": "Hot"
-        },
         "supportsHttpsTrafficOnly": {
             "value": true
         }

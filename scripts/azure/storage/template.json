@@ -14,15 +14,9 @@
         "kind": {
             "type": "string"
         },
-        "accessTier": {
-            "type": "string"
-        },
         "supportsHttpsTrafficOnly": {
             "type": "bool"
         },
-        "isHnsEnabled": {
-            "type": "bool"
-        }
     },
     "variables": {},
     "resources": [
