@@ -8,17 +8,12 @@ def modify(args):
     with open(args.clusterTemplateFile, 'r+') as f:
         data = json.load(f)
 
-
-        # Cluster identity parameters
-        data['resources'][0]['identity']['userAssignedIdentities']={ args.userAssignedIdentities: {}}
-
-
-        key = "[listKeys('/subscriptions/5a08e9e0-83ee-4188-8fc2-18e16c7db524/resourceGroups/" + args.resource_group + "/providers/Microsoft.Storage/storageAccounts/" + args.container + "', '2015-05-01-preview').key1]"
+        key = "[listKeys('/subscriptions/5a08e9e0-83ee-4188-8fc2-18e16c7db524/resourceGroups/" + args.resource_group + "/providers/Microsoft.Storage/storageAccounts/" + args.storageName + "', '2015-05-01-preview').key1]"
 
         # Cluster storage Options
         data['resources'][0]['properties']['storageProfile']['storageaccounts'][0]['name']=args.storageName + ".blob.core.windows.net"
         data['resources'][0]['properties']['storageProfile']['storageaccounts'][0]['container']=args.container
-        data['resources'][0]['properties']['storageProfile']['storageaccounts'][0]['container']=key
+        data['resources'][0]['properties']['storageProfile']['storageaccounts'][0]['key']=key
 
         f.seek(0)        # <--- should reset file position to the beginning.
         json.dump(data, f, indent=4)
