@@ -30,7 +30,7 @@ node {
             az identity create -g  ${grupo_recursos} -n ${nombre_usuario} > identity
             idUsuario=`cat identity | jq -r ".principalId"`
             echo "idUsuario: \$idUsuario"
-            az role assignment create --role "Owner" --assignee-object-id \$idUsuario --scope \$idStorageResource
+            az role assignment create --role "Storage Blob Data Owner" --assignee-object-id \$idUsuario --scope \$idStorageResource
         """
     }
     stage('Subida de fichero'){
