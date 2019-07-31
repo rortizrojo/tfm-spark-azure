@@ -16,19 +16,17 @@
         },
         "supportsHttpsTrafficOnly": {
             "type": "bool"
-        },
+        }
     },
     "variables": {},
     "resources": [
         {
             "name": "[parameters('storageAccountName')]",
             "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "2018-07-01",
+            "apiVersion": "2019-04-01",
             "location": "[parameters('location')]",
             "properties": {
-                "accessTier": "[parameters('accessTier')]",
-                "supportsHttpsTrafficOnly": "[parameters('supportsHttpsTrafficOnly')]",
-                "isHnsEnabled": "[parameters('isHnsEnabled')]"
+                "supportsHttpsTrafficOnly": "[parameters('supportsHttpsTrafficOnly')]"
             },
             "dependsOn": [],
             "sku": {
