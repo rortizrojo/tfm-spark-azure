@@ -12,13 +12,6 @@ node {
                 credentialsId: 'gitlab-credentials',
                 url: 'https://gitlab.com/rortizrojo/tfm-spark-azure.git'
     }
-    stage('Configuring Azure Parameters')
-    {
-        sh """
-            cd scripts/azure/
-            python3 modifyStorageParameters.py -sf storage/parameters.json -sn ${nombre_cuenta} 
-        """
-    }
     stage('test'){
         sh """
             cd scripts/azure/cluster
