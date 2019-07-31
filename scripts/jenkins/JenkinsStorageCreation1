@@ -4,7 +4,7 @@ node {
     def nombre_usuario = 'Usuario30Julio'
     def id_suscripcion = '5a08e9e0-83ee-4188-8fc2-18e16c7db524'
     def grupo_recursos = 'grupoRecursosTest30Julio'
-    def contenedor = 'contenedoralmacenamiento'
+    def contenedor = 'asdfasdfasdfasdfa-2019-07-31t18-26-15-995z'
     def nombre_cluster = 'cluster-tfm-30-07-2019'
 
     stage('Preparation') { // for display purposes
@@ -34,7 +34,6 @@ node {
                 --resource-group ${grupo_recursos} \\
                 --template-file test/template.json \\
                 --parameters test/param.json
-
 
         """
 

@@ -23,14 +23,14 @@
     },
     "location": {
       "type": "string",
-      "defaultValue": "eastus",
+      "defaultValue": "westeurope",
       "metadata": {
         "description": "The location where all azure resources will be deployed."
       }
     },
     "clusterVersion": {
       "type": "string",
-      "defaultValue": "3.6",
+      "defaultValue": "4.0",
       "metadata": {
         "description": "HDInsight cluster version."
       }
@@ -92,7 +92,7 @@
             {
               "name": "otracuentadeprueba.dfs.core.windows.net",
               "isDefault": true,
-              "fileSystem": "contenedoralmacenamiento",
+              "fileSystem": "asdfasdfasdfasdfa-2019-07-31t18-26-15-995z",
               "resourceId": "/subscriptions/5a08e9e0-83ee-4188-8fc2-18e16c7db524/resourceGroups/grupoRecursosTest30Julio/providers/Microsoft.Storage/storageAccounts/otracuentadeprueba",
               "msiResourceId": "/subscriptions/5a08e9e0-83ee-4188-8fc2-18e16c7db524/resourcegroups/grupoRecursosTest30Julio/providers/Microsoft.ManagedIdentity/userAssignedIdentities/Usuario30Julio"
             }

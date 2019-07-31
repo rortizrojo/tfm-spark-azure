@@ -21,7 +21,7 @@
       "value": "SPARK"
     },
     "clusterVersion": {
-      "value": "3.6"
+      "value": "4.0"
     },
     "sshUserName": {
       "value": "sshuser"
