@@ -4,10 +4,10 @@
 export AZURE_STORAGE_ACCOUNT=$1
 export AZURE_STORAGE_KEY=$2
 
-export container_name=contenedordatos2
+export container_name=$3
 export blob_name=nombre_blob
-export file_to_upload=$3
-export destination_file=$4
+export file_to_upload=$4
+export destination_file=$5
 
 
 end=`date -d "1 year" '+%Y-%m-%dT%H:%M:%SZ'`

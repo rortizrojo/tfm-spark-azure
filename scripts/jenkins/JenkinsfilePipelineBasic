@@ -4,30 +4,23 @@ node {
     def id_suscripcion = '5a08e9e0-83ee-4188-8fc2-18e16c7db524'
     def grupo_recursos = 'grupoRecursosNuevo'
 
-
     stage('Preparation') { // for display purposes
-        // Get some code from a GitHub repository
-        // Get the Maven tool.
-        // ** NOTE: This 'M3' Maven tool must be configured
-        // **       in the global configuration.
         git branch: 'master',
-                credentialsId: 'f30cf8ec-04bd-4002-89ac-8aaeeb7a1df8',
-                url: 'https://gitlab.com/rortizrojo/tfm-spark.git'
+                credentialsId: 'gitlab-credentials',
+                url: 'https://gitlab.com/rortizrojo/tfm-spark-azure.git'
     }
     stage('Build') {
         // Run the maven build
         withEnv(["MVN_HOME=$mvnHome"]) {
-            if (isUnix()) {
-                sh '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore clean package'
-            } else {
-                bat(/"%MVN_HOME%\bin\mvn" -Dmaven.test.failure.ignore clean package/)
-            }
+            sh '"$MVN_HOME/bin/mvn" -Dmaven.test.failure.ignore clean package'
         }
     }
     stage('Creation Azure Storage'){
         sh """
             cd scripts/azure/storage/
             az login --service-principal -u http://ServiceTestJenkins --password 2366f72d-73e1-47f5-bedd-9b2ca47f9b82 --tenant 50140386-fd10-4b25-8169-e67b2b0b2017
+            sudo chmod +x deploy.sh
+
             ./deploy.sh -i ${id_suscripcion} -g ${grupo_recursos} -n desplieguePrueba -l westeurope
         """
     }
@@ -40,6 +33,7 @@ node {
             keyStorage=`python3 parserKeyStorage.py ficheroKeys`
             echo "Nombre Cuenta: $nombre_cuenta"
             echo "KeyStorage: \$keyStorage"
+            sudo chmod +x upload.sh
             ./upload.sh $nombre_cuenta \$keyStorage ../../../input/MuestraDatos.csv muestraSubido.csv
         """
     }
