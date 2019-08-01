@@ -1,0 +1,26 @@
+node {
+    def nombre_cuenta = 'otracuentadeprueba'
+    def cuenta_cluster = 'almacenamiento_cluster'
+    def nombre_usuario = 'Usuario30Julio'
+    def id_suscripcion = '5a08e9e0-83ee-4188-8fc2-18e16c7db524'
+    def grupo_recursos = 'grupoRecursosTest30Julio'
+    def contenedor = 'asdfasdfasdfasdfa-2019-07-31t18-26-15-995z'
+    def nombre_cluster = 'cluster-tfm-30-07-2019'
+
+    stage('Preparation') { // for display purposes
+        git branch: 'master',
+                credentialsId: 'gitlab-credentials',
+                url: 'https://gitlab.com/rortizrojo/tfm-spark-azure.git'
+    }
+    stage('Subida de fichero'){
+        sh """
+            cd scripts/azure/storage/
+            ls -la
+            az login --service-principal -u http://ServiceTestJenkins --password 2366f72d-73e1-47f5-bedd-9b2ca47f9b82 --tenant 50140386-fd10-4b25-8169-e67b2b0b2017
+            az storage account keys list --account-name $nombre_cuenta > ficheroKeys
+            cat ficheroKeys
+            keyStorage=`python3 parserKeyStorage.py ficheroKeys`
+            ./upload.sh $nombre_cuenta \$keyStorage $contenedor ../../../input/MuestraDatos.csv muestraSubido.csv
+        """
+    }
+}
