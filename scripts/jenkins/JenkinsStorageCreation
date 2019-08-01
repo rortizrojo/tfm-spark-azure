@@ -1,5 +1,5 @@
 node {
-    def nombre_cuenta = 'cuentaAlmacenamientoTfm'
+    def nombre_cuenta = 'cuenta-almacenamiento-tfm'
     def cuenta_cluster = 'almacenamiento_cluster'
     def nombre_usuario = 'usuarioTfm'
     def id_suscripcion = '5a08e9e0-83ee-4188-8fc2-18e16c7db524'
