@@ -1,10 +1,10 @@
 node {
-    def nombre_cuenta = 'cuenta-almacenamiento-tfm'
+    def nombre_cuenta = 'cuentaalmacenamientotfm'
     def cuenta_cluster = 'almacenamiento_cluster'
     def nombre_usuario = 'usuarioTfm'
     def id_suscripcion = '5a08e9e0-83ee-4188-8fc2-18e16c7db524'
     def grupo_recursos = 'grupoRecursosTfm'
-    def contenedor = 'contenedor-cluster'
+    def contenedor = 'contenedorcluster'
     def nombre_cluster = 'cluster-tfm'
 
     stage('Preparation') { // for display purposes
