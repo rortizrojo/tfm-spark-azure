@@ -1,6 +1,6 @@
 node {
     def nombre_cuenta = 'cuentaalmacenamientotfm'
-    def contenedor = 'contenedorficherosinput'
+    def contenedor = 'contenedoralmacenamiento'
 
     stage('Preparation') { // for display purposes
         git branch: 'master',
