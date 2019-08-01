@@ -2,7 +2,7 @@ node {
     stage('Creation Azure Storage'){
         sh """
             #az hdinsight delete --name $clusterName --resource-group $resourceGroup--yes  
-            #az storage account delete -n $storageAccount -g $resourcesName  --yes
+            #az storage account delete -n $storageAccount -g $resourceName  --yes
             echo "Cluster: $clusterName" 
             echo "Storage: $storageAccount"
             echo "Resource Group: $resourceGroup"
