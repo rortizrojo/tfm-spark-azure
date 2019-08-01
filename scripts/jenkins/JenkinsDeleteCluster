@@ -9,7 +9,9 @@ node {
 
     stage('Creation Azure Storage'){
         sh """
-           az hdinsight delete --name $nombre_cluster --resource-group $grupo_recursos        
+            az hdinsight delete --name $nombre_cluster --resource-group $grupo_recursos --yes  
+            az storage account delete -n cuentaalmacenamientotfm -g grupoRecursosTfm --yes
+
         """
     }
 
