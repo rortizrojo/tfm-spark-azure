@@ -1,11 +1,6 @@
 node {
     def nombre_cuenta = 'cuentaAlmacenamientoTfm'
-    def cuenta_cluster = 'almacenamiento_cluster'
-    def nombre_usuario = 'usuarioTfm'
-    def id_suscripcion = '5a08e9e0-83ee-4188-8fc2-18e16c7db524'
-    def grupo_recursos = 'grupoRecursosTfm'
-    def contenedor = 'asdfasdfasdfasdfa-2019-07-31t18-26-15-995z'
-    def nombre_cluster = 'cluster-tfm'
+    def contenedor = 'contenedorficherosinput'
 
     stage('Preparation') { // for display purposes
         git branch: 'master',
