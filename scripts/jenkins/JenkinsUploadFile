@@ -1,5 +1,5 @@
 node {
-    def nombre_cuenta = 'cuentaAlmacenamientoTfm'
+    def nombre_cuenta = 'cuenta-almacenamiento-tfm'
     def contenedor = 'contenedorficherosinput'
 
     stage('Preparation') { // for display purposes
