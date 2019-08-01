@@ -6,6 +6,7 @@ node {
     }
     stage('Subida de fichero'){
         sh """
+
             cd scripts/azure/
             python3 modifyStorageParameters.py -sf storage/parameters.json -sn ${nombre_cuenta} 
             cd scripts/azure/storage/
