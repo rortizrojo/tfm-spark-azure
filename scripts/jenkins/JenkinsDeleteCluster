@@ -1,0 +1,16 @@
+node {
+    def nombre_cuenta = 'cuentaalmacenamientotfm'
+    def nombre_usuario = 'usuarioTfm'
+    def id_suscripcion = '5a08e9e0-83ee-4188-8fc2-18e16c7db524'
+    def grupo_recursos = 'grupoRecursosTfm'
+    def contenedor_cluster = 'contenedorcluster'
+    def nombre_cluster = 'cluster-tfm'
+
+
+    stage('Creation Azure Storage'){
+        sh """
+           az hdinsight delete --name $nombre_cluster --resource-group $grupo_recursos        
+        """
+    }
+
+}
