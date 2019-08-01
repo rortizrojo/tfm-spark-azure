@@ -1,7 +1,4 @@
 node {
-    def nombre_cuenta = 'cuentaalmacenamientotfm'
-    def contenedor = 'contenedoralmacenamiento'
-
     stage('Preparation') { // for display purposes
         git branch: 'master',
                 credentialsId: 'gitlab-credentials',
@@ -14,10 +11,12 @@ node {
             cd scripts/azure/storage/
             ls -la
             az login --service-principal -u http://ServiceTestJenkins --password 2366f72d-73e1-47f5-bedd-9b2ca47f9b82 --tenant 50140386-fd10-4b25-8169-e67b2b0b2017
+            bash ./deploy.sh -i ${id_suscripcion} -g ${grupo_recursos} -n $nombre_despliegue -l westeurope 
+
             az storage account keys list --account-name $nombre_cuenta > ficheroKeys
             cat ficheroKeys
             keyStorage=`python3 parserKeyStorage.py ficheroKeys`
-            ./upload.sh $nombre_cuenta \$keyStorage $contenedor ../../../input/MuestraDatos.csv muestraSubido.csv
+            bash ./upload.sh $nombre_cuenta \$keyStorage $contenedor ../../../input/MuestraDatos.csv muestraSubido.csv
         """
     }
 }
