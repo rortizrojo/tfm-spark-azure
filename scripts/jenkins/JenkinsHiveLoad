@@ -9,8 +9,9 @@ node {
             cluster_info=`az hdinsight list --resource-group  grupoRecursosTfm`
             cluster_name=`echo \$cluster_info | jq -r ".[0].name"`
             sshUser=`echo \$cluster_info | jq -r ".[0].properties.computeProfile.roles[0].osProfile.linuxOperatingSystemProfile.username"`
-            ssh \${sshUser}@\${cluster_name}-ssh.azurehdinsight.net
-            echo "Path: \$DATA_LAKE_MAIN_PATH"     
+            echo "Path: \$DATA_LAKE_MAIN_PATH"
+            ssh -tt \${sshUser}@\${cluster_name}-ssh.azurehdinsight.net
+                 
         """
     }
 }
