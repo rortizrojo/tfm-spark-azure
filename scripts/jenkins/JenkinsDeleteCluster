@@ -1,4 +1,12 @@
 node {
+
+    stage('Preparation') { // for display purposes
+        git branch: 'master',
+                credentialsId: 'gitlab-credentials',
+                url: 'https://gitlab.com/rortizrojo/tfm-spark-azure.git'
+    }
+
+
     stage('Creation Azure Storage'){
         sh """
             #az hdinsight delete --name $clusterName --resource-group $resourceGroup --yes  
