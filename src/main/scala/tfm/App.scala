@@ -24,10 +24,12 @@ object App {
       .getOrCreate()
 
 
-    val dfInput = spark.read
-      .option("header", true)
-      .option("delimiter", ";")
-      .csv("MuestraDatos.csv")
+//    val dfInput = spark.read
+//      .option("header", true)
+//      .option("delimiter", ";")
+//      .csv("MuestraDatos.csv")
+
+    val dfInput = spark.sql("select * from testTable")
 
     //val df = dfInput.select(dfInput("Keyword"))
 
