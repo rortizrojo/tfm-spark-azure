@@ -7,7 +7,7 @@ node {
 
             keyStorage=`az storage account keys list --account-name $storageAccount | jq -r ".[0].value"`
             cd scripts/azure/
-            bash ./deleteContainer.sh $storageAccount $keyStorage $container
+            bash ./deleteContainer.sh $storageAccount \$keyStorage $container
 
 
 
