@@ -1,8 +1,8 @@
 node {
     stage('Creation Azure Storage'){
         sh """
-            az hdinsight delete --name $clusterName --resource-group $resourceGroup --yes  
-            az identity delete --name $identity --resource-group $resourceGroup
+            #az hdinsight delete --name $clusterName --resource-group $resourceGroup --yes  
+            #az identity delete --name $identity --resource-group $resourceGroup
 
 
             keyStorage=`az storage account keys list --account-name $storageAccount | jq -r ".[0].value"`
