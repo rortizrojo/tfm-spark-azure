@@ -1,7 +1,7 @@
 node {
 
     stage('Preparation') { // for display purposes
-        git branch: 'master',
+        git branch: 'deleteCluster',
                 credentialsId: 'gitlab-credentials',
                 url: 'https://gitlab.com/rortizrojo/tfm-spark-azure.git'
     }

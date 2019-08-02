@@ -1,7 +1,7 @@
 node {
     def nombre_despliegue = 'despliequeFicheros'
     stage('Preparation') { // for display purposes
-        git branch: 'master',
+        git branch: 'uploadFile',
                 credentialsId: 'gitlab-credentials',
                 url: 'https://gitlab.com/rortizrojo/tfm-spark-azure.git'
     }
