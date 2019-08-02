@@ -1,0 +1,13 @@
+node {
+    stage('Preparation') { // for display purposes
+        git branch: 'hiveLoad',
+                credentialsId: 'gitlab-credentials',
+                url: 'https://gitlab.com/rortizrojo/tfm-spark-azure.git'
+    }
+    stage('Subida de fichero') {
+        sh """
+            ssh sshuser@cluster-tfm-30-07-2019-ssh.azurehdinsight.net
+                   
+        """
+    }
+}
