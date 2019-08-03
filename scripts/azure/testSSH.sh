@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ficheroInput="muestraSubido.csv"
-outputPath="/fichero.csv"
+outputPath="/ultimaPrueba.csv"
 
 
 cluster_info=`az hdinsight list --resource-group  grupoRecursosTfm`
