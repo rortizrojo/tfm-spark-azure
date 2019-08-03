@@ -9,13 +9,9 @@ DATA_LAKE_MAIN_PATH=abfs://${contenedor}@${pathAccount}/
 sshHostName=${sshUser}@${cluster_name}-ssh.azurehdinsight.net
 test="hdfs dfs -ls $DATA_LAKE_MAIN_PATH > ficheroSalida"
 echo $test
-sshpass -v -p 'tfmPassword.2019' ssh -tt $sshHostName -o StrictHostKeyChecking=no
- << EOF
-   #some commands
-   echo "Switching the path"
-EOF
-
-
+echo "SSH HOST: $sshHostName"
+RESULTS=$(sshpass -v -p 'tfmPassword.2019' ssh -tt $sshHostName -o StrictHostKeyChecking=no 'mkdir carpetaTest;$test')
+echo "Resultados: $RESULTS"
 
 
 exit
