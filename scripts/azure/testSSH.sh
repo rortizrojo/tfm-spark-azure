@@ -16,6 +16,7 @@ commandExecuteHive="beeline -u 'jdbc:hive2://localhost:10001/;transportMode=http
 
 echo "Comando: $command"
 echo "SSH HOST: $sshHostName"
+ssh-keygen -f "/var/lib/jenkins/.ssh/known_hosts" -R "${cluster_name}-ssh.azurehdinsight.net"
 sshpass -p 'tfmPassword.2019' scp scripts/hive/createTable.hql $sshHostName:$ouputPathHQLFile
 sshpass -p 'tfmPassword.2019' ssh -tt $sshHostName -o StrictHostKeyChecking=no "$command;$commandExecuteHive"
 
