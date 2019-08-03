@@ -7,7 +7,7 @@ pathAccount=`echo $cluster_info | jq -r ".[0].properties.storageProfile.storagea
 contenedor=`echo $cluster_info | jq -r ".[0].properties.storageProfile.storageaccounts[0].fileSystem"`
 DATA_LAKE_MAIN_PATH=abfs://${contenedor}@${pathAccount}/
 sshHostName=${sshUser}@${cluster_name}-ssh.azurehdinsight.net
-test="hdfs dfs -ls $DATA_LAKE_MAIN_PATH"
+test="hdfs dfs -ls $DATA_LAKE_MAIN_PATH > ficheroSalida"
 echo $test
 sshpass -p 'tfmPassword.2019' ssh -tt $sshHostName -o StrictHostKeyChecking=no '$test'
 
