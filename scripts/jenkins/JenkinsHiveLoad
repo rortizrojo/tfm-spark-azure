@@ -13,6 +13,7 @@ node {
             pathAccount=`echo \$cluster_info | jq -r ".[0].properties.storageProfile.storageaccounts[0].name"`
             contenedor=`echo \$cluster_info | jq -r ".[0].properties.storageProfile.storageaccounts[0].fileSystem"`
             DATA_LAKE_MAIN_PATH=abfs://\${contenedor}@\${pathAccount}/
+            ssh-keygen -R \${cluster_name}-ssh.azurehdinsight.net
             ssh -tt \${sshUser}@\${cluster_name}-ssh.azurehdinsight.net
             hdfs dfs -ls \$DATA_LAKE_MAIN_PATH                 
         """
