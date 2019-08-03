@@ -6,12 +6,15 @@ node {
     }
     stage('Subida de fichero') {
         sh """
+            
             cluster_info=`az hdinsight list --resource-group  grupoRecursosTfm`
             cluster_name=`echo \$cluster_info | jq -r ".[0].name"`
             sshUser=`echo \$cluster_info | jq -r ".[0].properties.computeProfile.roles[0].osProfile.linuxOperatingSystemProfile.username"`
-            echo "Path: \$DATA_LAKE_MAIN_PATH"
+            pathAccount=`echo \$cluster_info | jq -r ".[0].properties.storageProfile.storageaccounts[0].name"`
+            contenedor=`echo \$cluster_info | jq -r ".[0].properties.storageProfile.storageaccounts[0].fileSystem"`
+            DATA_LAKE_MAIN_PATH=abfs://\${contenedor}@\${pathAccount}/
             ssh -tt \${sshUser}@\${cluster_name}-ssh.azurehdinsight.net
-                 
+            hdfs dfs -ls \$DATA_LAKE_MAIN_PATH                 
         """
     }
 }
