@@ -23,8 +23,8 @@ node {
     stage('Creation Azure HDInsight Cluster'){
         sh """
             cd scripts/azure
-            identity=`cat storage/identity | jq -r ".id"`
-            idStorageResource=`cat storage/resourceId | jq -r ".properties.outputResources[0].id"`
+            identity=`cat cluster/storage/identity | jq -r ".id"`
+            idStorageResource=`cat cluster/storage/resourceId | jq -r ".properties.outputResources[0].id"`
             python3 modifyClusterTemplate.py -n $nombre_cluster -ctf cluster/deployment/template.json -cpf cluster/deployment/parameters.json -uai \$identity -si \$idStorageResource -sn $nombre_cuenta -c $contenedor_cluster 
             # python3 modifyClusterTemplate1.py -n $nombre_cluster -ctf cluster/template.json -cpf cluster/parameters.json -rg $grupo_recursos -sn $nombre_cuenta -c $contenedor_cluster         
             cd cluster/deployment/
