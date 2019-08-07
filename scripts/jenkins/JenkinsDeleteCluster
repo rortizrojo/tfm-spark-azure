@@ -1,13 +1,26 @@
 node {
+
+    stage('Preparation') { // for display purposes
+        git branch: 'deleteCluster',
+                credentialsId: 'gitlab-credentials',
+                url: 'https://gitlab.com/rortizrojo/tfm-spark-azure.git'
+    }
+
+
     stage('Creation Azure Storage'){
         sh """
             az hdinsight delete --name $clusterName --resource-group $resourceGroup --yes  
-            az storage account delete -n $storageAccount -g $resourceGroup  --yes
             az identity delete --name $identity --resource-group $resourceGroup
+            keyStorage=`az storage account keys list --account-name $storageAccount | jq -r ".[0].value"`
+            cd scripts/azure/
+            bash ./deleteContainer.sh $storageAccount \$keyStorage $container
+
+
             echo "Cluster: $clusterName" 
             echo "Storage: $storageAccount"
             echo "Resource Group: $resourceGroup"
-            echo "Resource Group: $identity"
+            echo "Identity: $identity"
+            echo "Container: $container"
         """
     }
 }
