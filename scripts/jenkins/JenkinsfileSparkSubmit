@@ -1,10 +1,13 @@
-stage('Preparation') { // for display purposes
-    git branch: 'spark-submit',
-            credentialsId: 'gitlab-credentials',
-            url: 'https://gitlab.com/rortizrojo/tfm-spark-azure.git'
-}
-stage('Subida de fichero') {
-    sh """
+node {
+    stage('Preparation') { // for display purposes
+        git branch: 'spark-submit',
+                credentialsId: 'gitlab-credentials',
+                url: 'https://gitlab.com/rortizrojo/tfm-spark-azure.git'
+    }
+    stage('Subida de fichero') {
+        sh """
             bash ./scripts/azure/spark-submit-script.sh $nombre_fichero_entrada
         """
+    }
 }
+
