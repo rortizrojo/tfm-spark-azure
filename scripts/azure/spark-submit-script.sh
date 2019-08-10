@@ -13,7 +13,7 @@ sshHostName=${sshUser}@${cluster_name}-ssh.azurehdinsight.net
 command="hdfs dfs -cp $DATA_LAKE_MAIN_PATH$ficheroInput $outputPath"
 commandExecuteSparkSubmit="spark-submit --master yarn --deploy-mode cluster --py-files my_arch.zip prueba.py"
 
-zip -r my_arch.zip scripts/python/*.py
+sudo zip -r my_arch.zip scripts/python/*.py
 echo "Comando: $command"
 echo "SSH HOST: $sshHostName"
 ssh-keygen -f "/var/lib/jenkins/.ssh/known_hosts" -R "${cluster_name}-ssh.azurehdinsight.net"
