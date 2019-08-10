@@ -16,6 +16,7 @@ commandExecuteSparkSubmit="spark-submit --master yarn --deploy-mode cluster --py
 sudo zip -r my_arch.zip scripts/python/*.py
 echo "Comando: $command"
 echo "SSH HOST: $sshHostName"
+echo "Comanddo spark-submit: $commandExecuteSparkSubmit"
 ssh-keygen -f "/var/lib/jenkins/.ssh/known_hosts" -R "${cluster_name}-ssh.azurehdinsight.net"
 sshpass -p 'tfmPassword.2019' scp -o StrictHostKeyChecking=no my_arch.zip $sshHostName:my_arch.zip
 sshpass -p 'tfmPassword.2019' scp -o StrictHostKeyChecking=no scripts/python/prueba.py $sshHostName:prueba.py
