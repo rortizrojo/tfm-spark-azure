@@ -11,9 +11,12 @@ DATA_LAKE_MAIN_PATH=abfs://contenedoralmacenamiento@${pathAccount}/
 sshHostName=${sshUser}@${cluster_name}-ssh.azurehdinsight.net
 
 command="hdfs dfs -cp $DATA_LAKE_MAIN_PATH$ficheroInput $outputPath"
-commandExecuteSparkSubmit="spark-submit --master yarn --deploy-mode cluster --py-files my_arch.zip prueba.py"
+commandExecuteSparkSubmit="spark-submit --conf spark.yarn.maxAppAttempts=1 --master yarn --deploy-mode cluster --py-files my_arch.zip prueba.py"
 
-sudo zip -r my_arch.zip scripts/python/*.py
+cd scripts/python/
+sudo zip -r my_arch.zip *.py
+cd ../../
+sudo mv scripts/python/my_arch.zip my_arch.zip
 echo "Comando: $command"
 echo "SSH HOST: $sshHostName"
 echo "Comanddo spark-submit: $commandExecuteSparkSubmit"
