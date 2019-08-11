@@ -1,0 +1,35 @@
+node {
+    //def id_suscripcion = '5a08e9e0-83ee-4188-8fc2-18e16c7db524'
+    def nombre_despliegue = 'desplieque01082019'
+
+    stage('Preparation') { // for display purposes
+        git branch: 'testServicePrincipal',
+                credentialsId: 'gitlab-credentials',
+                url: 'https://gitlab.com/rortizrojo/tfm-spark-azure.git'
+    }
+    stage('Creation Azure Storage'){
+        sh """
+            cd scripts/azure/
+            python3 modifyStorageParameters.py -sf cluster/storage/parameters.json -sn ${nombre_cuenta} 
+            cd cluster/storage/
+            az login --service-principal -u http://ServicePrincipalJenkinsTest --password 0b1fca70-638a-4c99-9504-b4ff20f4b043 --tenant f07087f5-7fe3-4ffe-9c74-296b39ef9ca8
+            bash ./deploy.sh -i ${id_suscripcion} -g ${grupo_recursos} -n $nombre_despliegue -l westeurope 
+            idStorageResource=`cat resourceId | jq -r ".properties.outputResources[0].id"`
+            az identity create -g  ${grupo_recursos} -n ${nombre_usuario} > identity
+            idUsuario=`cat identity | jq -r ".principalId"`
+            az role assignment create --role "Storage Blob Data Owner" --assignee-object-id \$idUsuario --scope \$idStorageResource
+        """
+    }
+    stage('Creation Azure HDInsight Cluster'){
+        sh """
+            cd scripts/azure
+            identity=`cat cluster/storage/identity | jq -r ".id"`
+            idStorageResource=`cat cluster/storage/resourceId | jq -r ".properties.outputResources[0].id"`
+            python3 modifyClusterTemplate.py -n $nombre_cluster -ctf cluster/deployment/template.json -cpf cluster/deployment/parameters.json -uai \$identity -si \$idStorageResource -sn $nombre_cuenta -c $contenedor_cluster 
+            # python3 modifyClusterTemplate1.py -n $nombre_cluster -ctf cluster/template.json -cpf cluster/parameters.json -rg $grupo_recursos -sn $nombre_cuenta -c $contenedor_cluster         
+            cd cluster/deployment/
+            az login --service-principal -u http://ServicePrincipalJenkinsTest --password 0b1fca70-638a-4c99-9504-b4ff20f4b043 --tenant f07087f5-7fe3-4ffe-9c74-296b39ef9ca8
+            bash ./deploy.sh -i ${id_suscripcion} -g ${grupo_recursos} -n desplieguePrueba -l westeurope
+        """
+    }
+}
