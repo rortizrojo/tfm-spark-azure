@@ -36,8 +36,8 @@ node {
 
     finally{
         sh """
-            sudo rm -rf scripts/azure/cluster/storage/identity
-            sudo rm -rf scripts/azure/cluster/storage/resourceId
+            rm -rf scripts/azure/cluster/storage/identity
+            rm -rf scripts/azure/cluster/storage/resourceId
         """
 
     }
