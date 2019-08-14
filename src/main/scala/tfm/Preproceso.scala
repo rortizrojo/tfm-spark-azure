@@ -14,11 +14,13 @@ object Preproceso {
 
     spark.sparkContext.setLogLevel("WARN")
     val pathFile = "input/muestraFicheroPequenya.csv"
-//    val df = spark.read
-//      .option("header", true)
-//      //.schema(schemaStruct)
-//      .option("delimiter","\t")
-//      .csv(pathFile)
+    val df = spark.read
+      .option("header", true)
+      //.schema(schemaStruct)
+      .option("delimiter","\t")
+      .csv(pathFile)
+
+    val dfCleaned = Cleaner.clean(df)
 
   }
 }
