@@ -23,6 +23,7 @@ object Main {
     dfCleanedFilteredPreprocessed
       .coalesce(1)
       .write.format("com.databricks.spark.csv")
+      .mode("overwrite")
       .option("header", "true")
       .save("mydata.csv")
   }
