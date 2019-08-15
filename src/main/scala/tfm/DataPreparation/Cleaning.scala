@@ -23,7 +23,7 @@ class Cleaning {
   def nLenWordCleaning(df:DataFrame, columnName:String, wordLengthToDelete: Int): DataFrame ={
 
     val nlengthCleanUDF = udf { s: String =>
-      print("String:" + s)
+      println("String:" + s)
       s.split(" ").filter(x => x.length > wordLengthToDelete).mkString(" ")
     }
 
