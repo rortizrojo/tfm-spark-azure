@@ -16,11 +16,11 @@ object Main {
     val pathFile = "input/muestraFicheroPequenya.csv"
     val df = spark.read.option("header", true).option("delimiter","\t").csv(pathFile)
 
-    val dfCleaned = new Cleaning().clean(df)
-    val dfCleanedFiltered = new Filtering().filter(dfCleaned)
-    val dfCleanedFilteredPreprocessed = new Preprocessing().preprocess(dfCleanedFiltered)
+    val dfPreprocessed = new Preprocessing().preprocess(df)
+    val dfPreprocessedFiltered = new Filtering().filter(dfPreprocessed)
+    val dfCPreprocessedFilteredleaned = new Cleaning().clean(dfPreprocessedFiltered)
 
-    dfCleanedFilteredPreprocessed
+    dfCPreprocessedFilteredleaned
       .coalesce(1)
       .write.format("com.databricks.spark.csv")
       .mode("overwrite")
