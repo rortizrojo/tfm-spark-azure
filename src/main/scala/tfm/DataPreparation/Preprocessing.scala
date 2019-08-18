@@ -1,24 +1,29 @@
 package tfm.DataPreparation
 
+import org.apache.log4j.Logger
 import org.apache.spark.sql.DataFrame
-import org.apache.spark.sql.functions.{col, lower, udf, regexp_replace}
+import org.apache.spark.sql.functions.{col, lower, regexp_replace, udf}
 
 class Preprocessing {
 
   def preprocess(df: DataFrame):DataFrame={
+    val logger = Logger.getLogger(this.getClass.getName)
 
     val column = "Queries"
-    val regExp = ""
+    val regExp = "[0-9]+"
 
     val dfReparted = df.repartition(8)
-    println("Numero de elementos antes de limpieza", dfReparted.count())
+    logger.warn("Numero de elementos antes de limpieza: " + dfReparted.count())
     val dfNullCleaned = nullCleaning(dfReparted, column)
-    println("Numero de elementos despues de limpieza", dfNullCleaned.count())
+    logger.warn("Numero de elementos despues de limpieza: " + dfNullCleaned.count())
     val dfLowered = toLower(dfNullCleaned, column)
     val dfNlenghtCleaned = nLenWordCleaning(dfLowered, column, 3)
     val dfStartCleaned = startsWithCleaner(dfNlenghtCleaned, column, regExp)
+    val dfReplacerCleaning = replacerCleaning(dfStartCleaned,column, regExp, "")
+    val dfRegExpression = regularExprCleaning(dfReplacerCleaning, column, regExp)
+    val dfSpecialCharCleaning = specialCharCleaning(dfRegExpression, column)
 
-    dfNlenghtCleaned
+    dfSpecialCharCleaning
   }
 
   /**

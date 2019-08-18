@@ -1,8 +1,11 @@
 package tfm.DataPreparation
 
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
+import org.junit.runner.RunWith
 import org.scalatest.FunSuite
+import org.scalatestplus.junit.JUnitRunner
 
+@RunWith(classOf[JUnitRunner])
 class PreprocessingTest extends FunSuite with DataFrameSuiteBase {
 
   test("Pasar a minúsculas una columna de un DataFrame") {
