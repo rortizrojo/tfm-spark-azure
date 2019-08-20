@@ -1,11 +1,8 @@
 package tfm
 
-import org.apache.spark.sql.Column
-import org.apache.spark.sql.functions._
-import tfm.config.Config
-import org.apache.spark.sql.functions.col
 import org.apache.log4j.Logger
 import tfm.DataPreparation.{Cleaning, Filtering, Preprocessing}
+import tfm.config.Config
 
 
 object Main {

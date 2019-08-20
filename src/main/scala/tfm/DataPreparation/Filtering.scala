@@ -1,22 +1,19 @@
 package tfm.DataPreparation
 
-import org.apache.log4j.Logger
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.expressions.Window
-import org.apache.spark.sql.functions.{col,count}
+import org.apache.spark.sql.functions.{col, count}
 
 class Filtering {
 
-
   def filter(df:DataFrame): DataFrame ={
 
-    val logger = Logger.getLogger(this.getClass.getName)
     val column = "Queries"
 
     //Elegir uno de los dos siguientes algoritmos, no los dos
     val dfReduced = reduceDuplicatesToOne(df, column)
     //val dfDeletedDuplicates = deleteDuplicates(df, column)
-    val dfDeletedNullRows = deleteNoDataRows(df, column)
+    val dfDeletedNullRows = deleteNoDataRows(dfReduced, column)
     dfDeletedNullRows
   }
 
