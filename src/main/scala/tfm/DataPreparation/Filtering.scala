@@ -21,38 +21,38 @@ class Filtering {
   }
 
   /**
+    * Elimina filas de un dataframe que contiene duplicados en la columna indicada dejando una sola fila
     *
-    * @param df
-    * @param column
-    * @return
+    * @param df DataFrame con los datos de entrada.
+    * @param column Columna en la que hay que realizar el proceso.
+    * @return El DataFrame con las filas duplicadas eliminadas excepto una
     */
   def reduceDuplicatesToOne(df:DataFrame, column: String): DataFrame = {
     df.dropDuplicates(column)
   }
 
   /**
+    * Elimina filas de un dataframe que contiene duplicados en la columna indicada no dejando ninguna de las filas con duplicados
     *
-    * @param df
-    * @param column
-    * @return
+    * @param df DataFrame con los datos de entrada.
+    * @param column Columna en la que hay que realizar el proceso.
+    * @return El DataFrame con las filas duplicadas eliminadas
     */
   def deleteDuplicates(df:DataFrame, column: String): DataFrame = {
-
-
     df
       .withColumn("cnt", count("*").over(Window.partitionBy(col(column))))
       .where(col("cnt")===1).drop(col("cnt"))
-
   }
 
   /**
+    * Elimina filas de un dataframe que no tiene datos en la columna indicada. Por ejemplo, si tiene solamente espacios, tabulaciones o saltos de línea
     *
-    * @param df
-    * @param column
-    * @return
+    * @param df DataFrame con los datos de entrada.
+    * @param column Columna en la que hay que realizar el proceso.
+    * @return El DataFrame con las filas sin datos eliminadas
     */
   def deleteNoDataRows(df:DataFrame, column: String): DataFrame = {
-    ???
+    df.filter(!col(column).rlike("^(\\s|\t|\n)*$"))
   }
 
 }
