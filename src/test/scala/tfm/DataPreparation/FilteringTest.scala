@@ -10,15 +10,21 @@ import org.scalatestplus.junit.JUnitRunner
 class FilteringTest extends FunSuite with DataFrameSuiteBase{
 
   test("testDeleteDuplicates") {
+    import spark.implicits._
 
+    val input = sc.parallelize(Seq(("hola"), ("hola"), ("adiós"), ("Adiós"))).toDF()
+    val reslut = new Filtering().deleteDuplicates(input, "value").orderBy("value")
+    val expected = sc.parallelize(Seq(("adiós"), ("Adiós"))).toDF().orderBy("value")
+
+    assertDataFrameEquals(expected,reslut )
   }
 
   test("testReduceDuplicatesToOne") {
     import spark.implicits._
 
-    val input = sc.parallelize(Seq(("hola"), ("hola"))).toDF()
-    val reslut = new Filtering().reduceDuplicatesToOne(input, "value")
-    val expected = sc.parallelize(Seq(("hola"))).toDF()
+    val input = sc.parallelize(Seq(("hola"), ("hola"), ("adiós"), ("Adiós"))).toDF()
+    val reslut = new Filtering().reduceDuplicatesToOne(input, "value").orderBy("value")
+    val expected = sc.parallelize(Seq(("hola"),("adiós"), ("Adiós"))).toDF().orderBy("value")
 
     assertDataFrameEquals(expected,reslut )
   }

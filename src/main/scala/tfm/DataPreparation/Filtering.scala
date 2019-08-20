@@ -2,7 +2,8 @@ package tfm.DataPreparation
 
 import org.apache.log4j.Logger
 import org.apache.spark.sql.DataFrame
-import org.apache.spark.sql.functions.{col}
+import org.apache.spark.sql.expressions.Window
+import org.apache.spark.sql.functions.{col,count}
 
 class Filtering {
 
@@ -36,7 +37,12 @@ class Filtering {
     * @return
     */
   def deleteDuplicates(df:DataFrame, column: String): DataFrame = {
-    ???
+
+
+    df
+      .withColumn("cnt", count("*").over(Window.partitionBy(col(column))))
+      .where(col("cnt")===1).drop(col("cnt"))
+
   }
 
   /**
