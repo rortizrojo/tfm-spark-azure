@@ -7,7 +7,6 @@ class Cleaning {
     val column = "Queries"
     val dfApostropheCleaned = apostropheCleaning(df, column )
 
-
     ???
   }
 
@@ -18,6 +17,9 @@ class Cleaning {
     * @return
     */
   def apostropheCleaning(df:DataFrame, column: String): DataFrame={
+    df
+
+
     ???
   }
 

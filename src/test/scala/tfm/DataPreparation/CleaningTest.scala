@@ -12,5 +12,52 @@ class CleaningTest extends FunSuite with DataFrameSuiteBase {
   //        assertDataFrameEquals(input1, input2) // not equal
   //      }
 
+  test("testExpressionsCleaning") {
+
+  }
+
+  test("testUrlCleaning") {
+
+  }
+
+  test("testHtmlCleaning") {
+
+  }
+
+  test("testAttachedWordsCleaning") {
+
+  }
+
+  test("testStandarizingCleaning") {
+
+  }
+
+  test("testInitialFinalApostropheCleaning") {
+
+  }
+
+  test("testGrammarCleaning") {
+
+  }
+
+  test("testApostropheCleaning") {
+
+  }
+
+  test("testCharactersCleaning") {
+
+  }
+
+  test("testDecodingCleaning") {
+
+  }
+
+  test("testSlangCleaning") {
+
+  }
+
+  test("testContentCleaning") {
+
+  }
 
 }

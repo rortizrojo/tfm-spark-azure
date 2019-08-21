@@ -57,6 +57,27 @@
       <artifactId>scala-library</artifactId>
       <version>${scala.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.allenai.nlpstack</groupId>
+      <artifactId>nlpstack-chunk_2.11</artifactId>
+      <version>1.19</version>
+    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.allenai.nlpstack</groupId>-->
+<!--      <artifactId>nlpstack-parse_2.11</artifactId>-->
+<!--      <version>1.19</version>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.allenai.common</groupId>-->
+<!--      <artifactId>common-testkit_2.11</artifactId>-->
+<!--      <version>1.2.1</version>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.allenai.common</groupId>-->
+<!--      <artifactId>common-core_2.11</artifactId>-->
+<!--      <version>1.4.6</version>-->
+<!--    </dependency>-->
+
 
     <!-- Test -->
     <dependency>
