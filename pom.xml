@@ -88,6 +88,13 @@
       <artifactId>processors-modelscorenlp_2.11</artifactId>
       <version>${nlp.version}</version>
     </dependency>
+
+    <dependency>
+      <groupId>com.johnsnowlabs.nlp</groupId>
+      <artifactId>spark-nlp_2.11</artifactId>
+      <version>2.1.0</version>
+    </dependency>
+
 <!--    <dependency>-->
 <!--      <groupId>org.allenai.nlpstack</groupId>-->
 <!--      <artifactId>nlpstack-tokenize_2.11</artifactId>-->

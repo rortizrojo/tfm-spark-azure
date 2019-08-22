@@ -1,6 +1,8 @@
 package tfm.DataPreparation
 
 import org.apache.spark.sql.DataFrame
+import org.apache.spark.sql.functions.udf
+import tfm.NLPProcessor
 
 class Cleaning {
   def clean(df: DataFrame): DataFrame ={
@@ -17,11 +19,57 @@ class Cleaning {
     * @return
     */
   def apostropheCleaning(df:DataFrame, column: String): DataFrame={
-    df
+    val s = "I'd like to ride a bike"
 
+    val processor = new NLPProcessor(s)
+    val tags = processor.getPosTags
+    val tokens = processor.getTokens
+    val pos_tags = for (index <- 0 to tags.length) yield  (tags(index),tokens(index))
+
+
+
+    val nlengthCleanUDF = udf { s: String =>
+      val processor = new NLPProcessor(s)
+      val tags = processor.getPosTags
+      val tokens = processor.getTokens
+      val pos_tags = for (index <- 0 to tags.length) yield  (tags(index),tokens(index))
+      pos_tags
+
+
+      //manage_ambiguos_apostrophes()
+
+
+    }
+
+
+    df
 
     ???
   }
+
+  def manage_ambiguos_apostrophes(first: (String, String), second: (String, String)) : String = {
+    if (first._1 == "'s") {
+      if (second._2 == "VBN")
+        return "has"
+      else if (first._2 != "POS")
+        return "is"
+    }
+    else if (first._1 == "'d")
+    {
+      if (second._2 == "VBN")
+        return "had"
+      else
+        return "would"
+    }
+    else if (second._1.contains("'") && second._1 != "'s" && second._1 != "'d")
+
+      return first._1 + second._1
+    else if (!first._1.contains("'") )
+      return first._1
+    return ""
+
+  }
+
 
 
   /**
