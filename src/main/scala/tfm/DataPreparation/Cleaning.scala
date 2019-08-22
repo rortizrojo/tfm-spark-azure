@@ -1,6 +1,8 @@
 package tfm.DataPreparation
 
 import org.apache.spark.sql.DataFrame
+import org.apache.spark.sql.functions.udf
+import tfm.NLPProcesor
 
 class Cleaning {
   def clean(df: DataFrame): DataFrame ={
@@ -17,10 +19,10 @@ class Cleaning {
     * @return
     */
   def apostropheCleaning(df:DataFrame, column: String): DataFrame={
-    df
+    val model = new NLPProcesor(column)
 
+    model.transform(df)
 
-    ???
   }
 
 
