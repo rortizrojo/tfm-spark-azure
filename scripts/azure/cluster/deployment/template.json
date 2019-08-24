@@ -121,7 +121,7 @@
                         {
                             "autoscale": null,
                             "name": "workernode",
-                            "targetInstanceCount": 4,
+                            "targetInstanceCount": 3,
                             "hardwareProfile": {
                                 "vmSize": "Standard_A4_V2"
                             },
