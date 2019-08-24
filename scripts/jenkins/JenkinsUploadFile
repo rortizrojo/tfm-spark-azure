@@ -18,7 +18,7 @@ node {
             az storage account keys list --account-name $nombre_cuenta > ficheroKeys
             cat ficheroKeys
             keyStorage=`python3 parserKeyStorage.py ficheroKeys`
-            bash ./upload.sh $nombre_cuenta \$keyStorage $contenedor ../../../input/MuestraDatos.csv muestraSubido.csv
+            bash ./upload.sh $nombre_cuenta \$keyStorage $contenedor ../../../input/muestraFicheroPequenya.csv muestraSubido.csv
         """
     }
 }
