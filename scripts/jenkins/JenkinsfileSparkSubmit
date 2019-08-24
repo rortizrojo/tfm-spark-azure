@@ -1,4 +1,5 @@
 node {
+    def mvnHome = tool 'M3'
     stage('Preparation') { // for display purposes
         git branch: 'spark-submit',
                 credentialsId: 'gitlab-credentials',
