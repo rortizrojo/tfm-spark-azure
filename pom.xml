@@ -21,16 +21,16 @@
     <scala.version>2.11.5</scala.version>
     <spark.version>2.3.0</spark.version>
     <scala.compat.version>2.11</scala.compat.version>
+    <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
+    <nlp.version>7.4.2</nlp.version>
   </properties>
 
   <dependencies>
-
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-sql_2.11</artifactId>
       <version>${spark.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-hive_2.11</artifactId>
@@ -57,6 +57,13 @@
       <version>${scala.version}</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/com.johnsnowlabs.nlp/spark-nlp -->
+    <dependency>
+      <groupId>com.johnsnowlabs.nlp</groupId>
+      <artifactId>spark-nlp_2.11</artifactId>
+      <version>2.1.0</version>
+    </dependency>
+
     <!-- Test -->
     <dependency>
       <groupId>junit</groupId>
@@ -64,6 +71,12 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.scala-tools.testing</groupId>-->
+<!--      <artifactId>specs_${scala.compat.version}</artifactId>-->
+<!--      <version>1.6.5</version>-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
     <dependency>
       <groupId>org.specs2</groupId>
       <artifactId>specs2-core_${scala.compat.version}</artifactId>
@@ -73,21 +86,36 @@
     <dependency>
       <groupId>org.scalatest</groupId>
       <artifactId>scalatest_${scala.compat.version}</artifactId>
-      <version>2.2.4</version>
+      <version>3.0.8</version>
       <scope>test</scope>
     </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.scalatest</groupId>-->
+<!--      <artifactId>scalatest_${scala.compat.version}</artifactId>-->
+<!--      <version>2.2.4</version>-->
+<!--      <scope>test</scope>-->
+<!--    </dependency>-->
     <dependency>
       <groupId>org.specs2</groupId>
       <artifactId>specs2-junit_${scala.compat.version}</artifactId>
       <version>2.4.16</version>
       <scope>test</scope>
     </dependency>
+    <!-- https://mvnrepository.com/artifact/com.holdenkarau/spark-testing-base -->
+    <dependency>
+      <groupId>com.holdenkarau</groupId>
+      <artifactId>spark-testing-base_2.11</artifactId>
+      <version>2.4.3_0.12.0</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
     <sourceDirectory>src/main/scala</sourceDirectory>
     <testSourceDirectory>src/test/scala</testSourceDirectory>
     <plugins>
+
       <plugin>
         <!-- see http://davidb.github.com/scala-maven-plugin -->
         <groupId>net.alchim31.maven</groupId>
@@ -112,7 +140,14 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.18.1</version>
+        <version>${maven-surefire-plugin.version}</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven.surefire</groupId>
+            <artifactId>surefire-junit47</artifactId>
+            <version>${maven-surefire-plugin.version}</version>
+          </dependency>
+        </dependencies>
         <configuration>
           <useFile>true</useFile>
           <disableXmlReport>false</disableXmlReport>
@@ -121,6 +156,7 @@
           <includes>
             <include>**/*Test.*</include>
             <include>**/*Suite.*</include>
+            <include>**/*Specification.*</include>
           </includes>
         </configuration>
       </plugin>

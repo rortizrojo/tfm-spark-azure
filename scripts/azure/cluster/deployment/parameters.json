@@ -15,7 +15,7 @@
             "value": "westeurope"
         },
         "clusterWorkerNodeCount": {
-            "value": 4
+            "value": 3
         },
         "clusterKind": {
             "value": "SPARK"

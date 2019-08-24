@@ -1,0 +1,1 @@
+{"class":"com.johnsnowlabs.nlp.annotators.pos.perceptron.PerceptronModel","timestamp":1556659930205,"sparkVersion":"2.4.0","uid":"POS_29fd848601e6","paramMap":{"inputCols":["token","document"],"outputCol":"pos"},"defaultParamMap":{}}
