@@ -8,7 +8,10 @@ node {
     stage('Build') {
         // Run the maven build
         withEnv(["MVN_HOME=$mvnHome"]) {
-            sh '"$MVN_HOME/bin/mvn" clean package'
+            if($skipTest)
+                sh '"$MVN_HOME/bin/mvn" clean -DskipTests package'
+            else
+                sh '"$MVN_HOME/bin/mvn" clean package'
         }
     }
     stage('Subida de ficheros') {
