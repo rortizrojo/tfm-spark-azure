@@ -14,7 +14,7 @@ class CleaningTest extends FunSuite with DataFrameSuiteBase {
   test("testApostropheCleaning") {
     import spark.implicits._
 
-    val listInput = Seq(
+    val listInput = List(
       ("I'd like to ride a bike"),
       ("She'd liked to ride a bike"),
       ("They can't ride a bike"),
@@ -25,7 +25,7 @@ class CleaningTest extends FunSuite with DataFrameSuiteBase {
       ("This is Pedro's bike")
     )
 
-    val listExpected = Seq(
+    val listExpected = List(
       ("I would like to ride a bike"),
       ("She had liked to ride a bike"),
       ("They cannot ride a bike"),

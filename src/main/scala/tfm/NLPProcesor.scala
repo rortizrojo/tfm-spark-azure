@@ -4,7 +4,6 @@ import com.johnsnowlabs.nlp.DocumentAssembler
 import com.johnsnowlabs.nlp.annotator.{PerceptronModel, SentenceDetector, Tokenizer}
 import com.johnsnowlabs.util.Benchmark
 import org.apache.log4j.Logger
-import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.ml.Pipeline
 import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession}
 import org.apache.spark.sql.functions.{col, udf}
@@ -20,7 +19,7 @@ class NLPProcesor(columnData:String) extends Serializable {
   import config.Config.spark.implicits._
 
 
-  val documentAssembler = new DocumentAssembler()
+   val documentAssembler = new DocumentAssembler()
     .setInputCol(columnData)
     .setOutputCol("document")
 
@@ -29,19 +28,19 @@ class NLPProcesor(columnData:String) extends Serializable {
     .setOutputCol("sentence")
 
 
-  val tokenizer = new Tokenizer()
+  @transient lazy val tokenizer = new Tokenizer()
     .setInputCols(Array("sentence"))
     .setOutputCol("token")
     .setInfixPatterns(Array("(\\w+)('{1}\\w+)"))
 
 
-  val pos_path = "resources/pos_anc_en_2.0.2_2.4_1556659930154"
-  val posTagger = PerceptronModel.load(pos_path)
+   val pos_path = "resources/pos_anc_en_2.0.2_2.4_1556659930154"
+   val posTagger = PerceptronModel.load(pos_path)
     .setInputCols("document", "token")
     .setOutputCol("pos")
 
 
-  val pipeline = new Pipeline()
+  @transient lazy val pipeline = new Pipeline()
     .setStages(Array(
       documentAssembler,
       sentenceDetector,

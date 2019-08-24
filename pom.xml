@@ -26,13 +26,11 @@
   </properties>
 
   <dependencies>
-
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-sql_2.11</artifactId>
       <version>${spark.version}</version>
     </dependency>
-
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-hive_2.11</artifactId>
@@ -59,76 +57,12 @@
       <version>${scala.version}</version>
     </dependency>
 
-
-
-
-    <!---->
-    <dependency>
-      <groupId>org.clulab</groupId>
-      <artifactId>processors-corenlp_2.11</artifactId>
-      <version>${nlp.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.clulab</groupId>
-      <artifactId>processors-main_2.11</artifactId>
-      <version>${nlp.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.clulab</groupId>
-      <artifactId>processors-odin_2.11</artifactId>
-      <version>${nlp.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.clulab</groupId>
-      <artifactId>processors-modelsmain_2.11</artifactId>
-      <version>${nlp.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.clulab</groupId>
-      <artifactId>processors-modelscorenlp_2.11</artifactId>
-      <version>${nlp.version}</version>
-    </dependency>
     <!-- https://mvnrepository.com/artifact/com.johnsnowlabs.nlp/spark-nlp -->
     <dependency>
       <groupId>com.johnsnowlabs.nlp</groupId>
       <artifactId>spark-nlp_2.11</artifactId>
       <version>2.1.0</version>
     </dependency>
-
-
-<!--    <dependency>-->
-<!--      <groupId>org.allenai.nlpstack</groupId>-->
-<!--      <artifactId>nlpstack-tokenize_2.11</artifactId>-->
-<!--      <version>1.19</version>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>org.allenai.nlpstack</groupId>-->
-<!--      <artifactId>nlpstack-core_2.11</artifactId>-->
-<!--      <version>1.19</version>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>org.allenai.nlpstack</groupId>-->
-<!--      <artifactId>nlpstack-parse_2.11</artifactId>-->
-<!--      <version>1.19</version>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>org.allenai.nlpstack</groupId>-->
-<!--      <artifactId>nlpstack-postag_2.11</artifactId>-->
-<!--      <version>1.19</version>-->
-<!--    </dependency>-->
-
-<!--    <dependency>-->
-<!--      <groupId>org.allenai.common</groupId>-->
-<!--      <artifactId>common-testkit_2.11</artifactId>-->
-<!--      <version>1.2.1</version>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>org.allenai.common</groupId>-->
-<!--      <artifactId>common-core_2.11</artifactId>-->
-<!--      <version>1.4.6</version>-->
-<!--    </dependency>-->
-
-
 
     <!-- Test -->
     <dependency>

@@ -21,6 +21,19 @@ class Cleaning {
   def apostropheCleaning(df:DataFrame, column: String): DataFrame={
     val model = new NLPProcesor(column)
     model.transform(df)
+
+//    import tfm.config.Config.spark.implicits._
+//    val listExpected = List(
+//      ("I would like to ride a bike"),
+//      ("She had liked to ride a bike"),
+//      ("They cannot ride a bike"),
+//      ("you are riding a bike"),
+//      ("He will ride a bike"),
+//      ("That bike is Pedro"),
+//      ("It is the bike I do not want to ride"),
+//      ("This is Pedro bike")
+//      )
+//    tfm.config.Config.spark.sparkContext.parallelize(listExpected).toDF().orderBy("value")
   }
 
 
