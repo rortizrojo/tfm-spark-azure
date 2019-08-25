@@ -11,10 +11,14 @@ node {
         {
             // Run the maven build
             withEnv(["MVN_HOME=$mvnHome"]) {
-                if(skipTest == true)
+                echo String.valueOf(skipTest)
+                if(skipTest == true) {
                     sh '"$MVN_HOME/bin/mvn" clean -DskipTests package'
-                else
+                }
+                else{
                     sh '"$MVN_HOME/bin/mvn" clean package'
+                }
+
             }
         }
     }
