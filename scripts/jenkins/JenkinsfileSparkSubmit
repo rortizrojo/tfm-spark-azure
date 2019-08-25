@@ -7,12 +7,11 @@ node {
     }
     stage('Build') {
         echo String.valueOf(skipBuild)
-        if(skipBuild != true)
+        if(skipBuild == 'false')
         {
             // Run the maven build
             withEnv(["MVN_HOME=$mvnHome"]) {
-                echo String.valueOf(skipTest)
-                if(skipTest == true) {
+                if(skipTest == 'true') {
                     sh '"$MVN_HOME/bin/mvn" clean -DskipTests package'
                 }
                 else{
@@ -29,8 +28,11 @@ node {
         """
     }
     stage('Results') {
-        junit '**/target/surefire-reports/TEST-*.xml'
-        archiveArtifacts 'target/*.jar'
+        if(skipTest == 'false'){
+            junit '**/target/surefire-reports/TEST-*.xml'
+            archiveArtifacts 'target/*.jar'
+        }
+
     }
 }
 
