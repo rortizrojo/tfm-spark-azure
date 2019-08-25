@@ -6,6 +6,7 @@ node {
                 url: 'https://gitlab.com/rortizrojo/tfm-spark-azure.git'
     }
     stage('Build') {
+        echo String.valueOf(skipBuild)
         if(skipBuild != true)
         {
             // Run the maven build
