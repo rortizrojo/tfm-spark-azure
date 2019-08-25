@@ -16,7 +16,7 @@ command="hdfs dfs -cp $DATA_LAKE_MAIN_PATH$ficheroInput $outputPath"
 commandExecuteSparkSubmit="echo \"testing\""
 echo "Usuario actual : $USER"
 
-echo <password> | sudo -S chown -v $USER ~/.ssh/known_hosts
+sudo chown -v $USER ~/.ssh/known_hosts
 sudo chown -v $USER /home/rortizrojo/.ssh/known_hosts
 
 echo "Ejecutando ssh-keygen rortizrojo"
