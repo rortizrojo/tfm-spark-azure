@@ -6,11 +6,11 @@ node {
                 url: 'https://gitlab.com/rortizrojo/tfm-spark-azure.git'
     }
     stage('Build') {
-        if(skipBuild != True)
+        if(skipBuild != true)
         {
             // Run the maven build
             withEnv(["MVN_HOME=$mvnHome"]) {
-                if(skipTest == True)
+                if(skipTest == true)
                     sh '"$MVN_HOME/bin/mvn" clean -DskipTests package'
                 else
                     sh '"$MVN_HOME/bin/mvn" clean package'
