@@ -16,13 +16,14 @@ command="hdfs dfs -cp $DATA_LAKE_MAIN_PATH$ficheroInput $outputPath"
 commandExecuteSparkSubmit="echo \"testing\""
 echo "Usuario actual : $USER"
 
-
+sudo chown -v $jenkins ~/.ssh/known_hosts
+sudo chown -v $jenkins /home/rortizrojo/.ssh/known_hosts
 ssh-keygen -f "/home/rortizrojo/.ssh/known_hosts" -R "cluster-tfm-ssh.azurehdinsight.net"
 
 
 echo "Comanddo spark-submit: $commandExecuteSparkSubmit"
 echo "Ejecutando ssh-keygen"
-sudo chown -v $jenkins ~/.ssh/known_hosts
+
 ssh-keygen -f "/var/lib/jenkins/.ssh/known_hosts" -R "${cluster_name}-ssh.azurehdinsight.net"
 # Copia de fichero jar a cluster
 echo "Subiendo jar al cluster"
