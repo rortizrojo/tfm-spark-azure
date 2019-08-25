@@ -16,8 +16,8 @@ command="hdfs dfs -cp $DATA_LAKE_MAIN_PATH$ficheroInput $outputPath"
 commandExecuteSparkSubmit="echo \"testing\""
 echo "Usuario actual : $USER"
 
-sudo chown -v $jenkins ~/.ssh/known_hosts
-sudo chown -v $jenkins /home/rortizrojo/.ssh/known_hosts
+echo <password> | sudo -S chown -v $USER ~/.ssh/known_hosts
+sudo chown -v $USER /home/rortizrojo/.ssh/known_hosts
 
 echo "Ejecutando ssh-keygen rortizrojo"
 ssh-keygen -f "/home/rortizrojo/.ssh/known_hosts" -R "cluster-tfm-ssh.azurehdinsight.net"
