@@ -29,8 +29,8 @@ sshpass -p 'tfmPassword.2019' scp -o StrictHostKeyChecking=no target/tfmSpark-1.
 # Declaración de comandos a ejecutar en cluster
 commandCreateInputFolder="hdfs dfs -mkdir /input"
 command="hdfs dfs -cp $DATA_LAKE_MAIN_PATH$ficheroInput /$outputPath"
-#commandExecuteSparkSubmit="spark-submit --conf spark.yarn.maxAppAttempts=1 --master yarn --deploy-mode cluster --class tfm.Main cleaning_lib.jar"
-commandExecuteSparkSubmit="echo \"testing\""
+commandExecuteSparkSubmit="spark-submit --conf spark.yarn.maxAppAttempts=1 --master yarn --deploy-mode cluster --class tfm.Main cleaning_lib.jar"
+#commandExecuteSparkSubmit="echo \"testing\""
 
 #Ejecución de comandos
 echo "Ejecutando comando: $command"
