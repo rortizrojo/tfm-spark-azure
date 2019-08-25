@@ -12,7 +12,9 @@ sshHostName=${sshUser}@${cluster_name}-ssh.azurehdinsight.net
 
 # Declaración de comandos a ejecutar en cluster
 command="hdfs dfs -cp $DATA_LAKE_MAIN_PATH$ficheroInput $outputPath"
-commandExecuteSparkSubmit="spark-submit --conf spark.yarn.maxAppAttempts=1 --master yarn --deploy-mode cluster --class tfm.Main cleaning_lib.jar"
+#commandExecuteSparkSubmit="spark-submit --conf spark.yarn.maxAppAttempts=1 --master yarn --deploy-mode cluster --class tfm.Main cleaning_lib.jar"
+commandExecuteSparkSubmit="echo \"testing\""
+
 ssh-keygen -f "/home/rortizrojo/.ssh/known_hosts" -R "cluster-tfm-ssh.azurehdinsight.net"
 
 
