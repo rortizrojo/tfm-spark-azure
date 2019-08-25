@@ -20,7 +20,7 @@ sudo chown -v $USER ~/.ssh/known_hosts
 sudo chown -v $USER /home/rortizrojo/.ssh/known_hosts
 
 echo "Ejecutando ssh-keygen rortizrojo"
-ssh-keygen -f "/home/rortizrojo/.ssh/known_hosts" -R "cluster-tfm-ssh.azurehdinsight.net"
+sudo ssh-keygen -f "/home/rortizrojo/.ssh/known_hosts" -R "${cluster_name}-ssh.azurehdinsight.net"
 echo "Ejecutando ssh-keygen jenkins"
 ssh-keygen -f "/var/lib/jenkins/.ssh/known_hosts" -R "${cluster_name}-ssh.azurehdinsight.net"
 
