@@ -11,6 +11,7 @@ pathAccount=`echo $cluster_info | jq -r ".[0].properties.storageProfile.storagea
 DATA_LAKE_MAIN_PATH=abfs://contenedoralmacenamiento@${pathAccount}/
 sshHostName=${sshUser}@${cluster_name}-ssh.azurehdinsight.net
 
+commandCreateInputFolder="hdfs dfs -mkdir /input"
 command="hdfs dfs -cp $DATA_LAKE_MAIN_PATH$ficheroInput $outputPath"
 commandExecuteHive="beeline -u 'jdbc:hive2://localhost:10001/;transportMode=http' -f $ouputPathHQLFile"
 
@@ -21,3 +22,5 @@ sshpass -p 'tfmPassword.2019' scp -o StrictHostKeyChecking=no scripts/hive/creat
 sshpass -p 'tfmPassword.2019' ssh -tt $sshHostName -o StrictHostKeyChecking=no "$command;$commandExecuteHive"
 
 exit
+
+
