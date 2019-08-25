@@ -18,7 +18,7 @@ ssh-keygen -f "/home/rortizrojo/.ssh/known_hosts" -R "cluster-tfm-ssh.azurehdins
 
 echo "Comanddo spark-submit: $commandExecuteSparkSubmit"
 echo "Ejecutando ssh-keygen"
-#sudo ssh-keygen -f "/var/lib/jenkins/.ssh/known_hosts" -R "${cluster_name}-ssh.azurehdinsight.net"
+sudo ssh-keygen -f "/var/lib/jenkins/.ssh/known_hosts" -R "${cluster_name}-ssh.azurehdinsight.net"
 # Copia de fichero jar a cluster
 echo "Subiendo jar al cluster"
 sshpass -p 'tfmPassword.2019' scp -o StrictHostKeyChecking=no target/tfmSpark-1.0-SNAPSHOT.jar $sshHostName:cleaning_lib.jar
