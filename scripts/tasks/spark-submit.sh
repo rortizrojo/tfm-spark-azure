@@ -31,7 +31,7 @@ sshpass -p 'tfmPassword.2019' scp -rp -o StrictHostKeyChecking=no resources $ssh
 commandCreateInputFolder="hdfs dfs -mkdir input"
 commandCreateResourceFolder="hdfs dfs -mkdir resources"
 command="hdfs dfs -cp $DATA_LAKE_MAIN_PATH$ficheroInput input/$outputPath"
-commandCopyResources="hdfs dfs -put /resources /resources"
+commandCopyResources="hdfs dfs -put resources resources"
 commandExecuteSparkSubmit="spark-submit --conf spark.yarn.maxAppAttempts=1 --master yarn --deploy-mode cluster --class tfm.Main cleaning_lib.jar"
 #commandExecuteSparkSubmit="echo \"testing\""
 
