@@ -9,7 +9,7 @@ class Cleaning {
     val column = "Queries"
     val dfApostropheCleaned = apostropheCleaning(df, column )
 
-    ???
+    dfApostropheCleaned
   }
 
   /**

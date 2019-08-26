@@ -9,7 +9,4 @@ object Config {
     .master("local[*]")
     .enableHiveSupport()
     .getOrCreate()
-
-
-
 }
