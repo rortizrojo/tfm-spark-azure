@@ -25,7 +25,7 @@ ssh-keygen -f "/var/lib/jenkins/.ssh/known_hosts" -R "${cluster_name}-ssh.azureh
 # Copia de fichero jar a cluster
 echo "Subiendo jar al cluster"
 sshpass -p 'tfmPassword.2019' scp -o StrictHostKeyChecking=no target/tfmSpark-1.0-SNAPSHOT-jar-with-dependencies.jar $sshHostName:cleaning_lib.jar
-sshpass -p 'tfmPassword.2019' scp -rp -o StrictHostKeyChecking=no resources $sshHostName:/resources
+sshpass -p 'tfmPassword.2019' scp -rp -o StrictHostKeyChecking=no resources $sshHostName:resources
 
 # Declaración de comandos a ejecutar en cluster
 commandCreateInputFolder="hdfs dfs -mkdir input"
