@@ -28,6 +28,8 @@ sshpass -p 'tfmPassword.2019' scp -o StrictHostKeyChecking=no target/tfmSpark-1.
 sshpass -p 'tfmPassword.2019' scp -rp -o StrictHostKeyChecking=no resources $sshHostName:resources
 
 # Declaración de comandos a ejecutar en cluster
+
+# El comando para eliminar la carpeta resources se ejecuta al final del proceso para que en la siguiente ejecución con la meta recursivamente
 commandDeleteFolder="rm -rf resources/"
 commandCreateInputFolder="hdfs dfs -mkdir input"
 command="hdfs dfs -cp $DATA_LAKE_MAIN_PATH$ficheroInput input/$outputPath"
@@ -40,6 +42,6 @@ echo "Ejecutando comando: $commandCreateInputFolder"
 echo "Ejecutando comando: $command"
 echo "SSH Hostname: $sshHostName"
 echo "Ejecutando spark-submit: $commandExecuteSparkSubmit"
-sshpass -p 'tfmPassword.2019' ssh -tt $sshHostName -o StrictHostKeyChecking=no "$commandDeleteFolder;$commandCreateInputFolder;$commandCopyResources;$command;$commandExecuteSparkSubmit"
+sshpass -p 'tfmPassword.2019' ssh -tt $sshHostName -o StrictHostKeyChecking=no "$commandCreateInputFolder;$commandCopyResources;$command;$commandExecuteSparkSubmit;$commandDeleteFolder"
 
 exit
