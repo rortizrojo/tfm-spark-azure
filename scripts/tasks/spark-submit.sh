@@ -27,12 +27,13 @@ echo "Subiendo jar al cluster"
 sshpass -p 'tfmPassword.2019' scp -o StrictHostKeyChecking=no target/tfmSpark-1.0-SNAPSHOT.jar $sshHostName:cleaning_lib.jar
 
 # Declaración de comandos a ejecutar en cluster
-commandCreateInputFolder="hdfs dfs -mkdir /input"
-command="hdfs dfs -cp $DATA_LAKE_MAIN_PATH$ficheroInput /$outputPath"
+commandCreateInputFolder="hdfs dfs -mkdir input"
+command="hdfs dfs -cp $DATA_LAKE_MAIN_PATH$ficheroInput input/$outputPath"
 commandExecuteSparkSubmit="spark-submit --conf spark.yarn.maxAppAttempts=1 --master yarn --deploy-mode cluster --class tfm.Main cleaning_lib.jar"
 #commandExecuteSparkSubmit="echo \"testing\""
 
 #Ejecución de comandos
+echo "Ejecutando comando: $commandCreateInputFolder"
 echo "Ejecutando comando: $command"
 echo "SSH Hostname: $sshHostName"
 echo "Ejecutando spark-submit: $commandExecuteSparkSubmit"
