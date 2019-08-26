@@ -13,7 +13,7 @@ object Main {
     val spark = Config.spark
    // spark.sparkContext.setLogLevel("WARN")
 
-    val pathFile = "input/muestraFicheroPequenya.csv"
+    val pathFile = "input/muestraSubido.csv"
     val df = spark.read.option("header", true).option("delimiter","\t").csv(pathFile)
 
     logger.warn("Preprocesado")
