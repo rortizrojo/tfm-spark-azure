@@ -40,6 +40,6 @@ echo "Ejecutando comando: $commandCreateInputFolder"
 echo "Ejecutando comando: $command"
 echo "SSH Hostname: $sshHostName"
 echo "Ejecutando spark-submit: $commandExecuteSparkSubmit"
-sshpass -p 'tfmPassword.2019' ssh -tt $sshHostName -o StrictHostKeyChecking=no "$commandCreateInputFolder;$commandCreateResourceFolder;$command;$commandExecuteSparkSubmit"
+sshpass -p 'tfmPassword.2019' ssh -tt $sshHostName -o StrictHostKeyChecking=no "$commandCreateInputFolder;$commandCreateResourceFolder;$commandCopyResources;$command;$commandExecuteSparkSubmit"
 
 exit
