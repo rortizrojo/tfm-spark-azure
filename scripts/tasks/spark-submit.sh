@@ -33,22 +33,23 @@ sshpass -p 'tfmPassword.2019' scp -rp -o StrictHostKeyChecking=no resources $ssh
 commandDeleteFolder="rm -rf resources/"
 
 
-commandCreateInputFolder2="hdfs dfs -mkdir /user/sshuser"
+commandCreateInputFolder1="hdfs dfs -mkdir /user/sshuser"
 commandCreateInputFolder2="hdfs dfs -mkdir /user/sshuser/input"
 command="hdfs dfs -cp $DATA_LAKE_MAIN_PATH$ficheroInput input/$outputPath"
 commandCopyResources="hdfs dfs -put resources resources"
-commandExecuteSparkSubmit="spark-submit --conf spark.yarn.maxAppAttempts=1 --num-executors 3 --executor-memory 15g --executor-cores 4 --master yarn --deploy-mode cluster --class tfm.Main cleaning_lib.jar"
+commandExecuteSparkSubmit="spark-submit --conf spark.yarn.maxAppAttempts=1 --driver-memory 10g --num-executors 3 --executor-memory 15g --executor-cores 4 --master yarn --deploy-mode cluster --class tfm.Main cleaning_lib.jar"
 #commandExecuteSparkSubmit="echo \"testing\""
 
 echo "SSH Hostname: $sshHostName"
 
 #Ejecución de comandos
-echo "Ejecutando comando: $commandCreateInputFolder"
+echo "Ejecutando comando: $commandCreateInputFolder1"
+echo "Ejecutando comando: $commandCreateInputFolder2"
 echo "Ejecutando comando: $commandCopyResources"
 echo "Ejecutando comando: $command"
 echo "Ejecutando comando: $commandExecuteSparkSubmit"
 echo "Ejecutando comando: $commandDeleteFolder"
 
-sshpass -p 'tfmPassword.2019' ssh -tt $sshHostName -o StrictHostKeyChecking=no "$commandCreateInputFolder;$commandCopyResources;$command;$commandExecuteSparkSubmit;$commandDeleteFolder"
+sshpass -p 'tfmPassword.2019' ssh -tt $sshHostName -o StrictHostKeyChecking=no "$commandCreateInputFolder1;$commandCreateInputFolder2;$commandCopyResources;$command;$commandExecuteSparkSubmit;$commandDeleteFolder"
 
 exit
