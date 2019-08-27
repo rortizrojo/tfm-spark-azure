@@ -31,10 +31,13 @@ sshpass -p 'tfmPassword.2019' scp -rp -o StrictHostKeyChecking=no resources $ssh
 
 # El comando para eliminar la carpeta resources se ejecuta al final del proceso para que en la siguiente ejecución con la meta recursivamente
 commandDeleteFolder="rm -rf resources/"
-commandCreateInputFolder="hdfs dfs -mkdir input"
+
+
+commandCreateInputFolder2="hdfs dfs -mkdir /user/sshuser"
+commandCreateInputFolder2="hdfs dfs -mkdir /user/sshuser/input"
 command="hdfs dfs -cp $DATA_LAKE_MAIN_PATH$ficheroInput input/$outputPath"
 commandCopyResources="hdfs dfs -put resources resources"
-commandExecuteSparkSubmit="spark-submit --conf spark.yarn.maxAppAttempts=1 --master yarn --deploy-mode cluster --class tfm.Main cleaning_lib.jar"
+commandExecuteSparkSubmit="spark-submit --conf spark.yarn.maxAppAttempts=1 --num-executors 3 --executor-memory 15g --executor-cores 4 --master yarn --deploy-mode cluster --class tfm.Main cleaning_lib.jar"
 #commandExecuteSparkSubmit="echo \"testing\""
 
 echo "SSH Hostname: $sshHostName"
