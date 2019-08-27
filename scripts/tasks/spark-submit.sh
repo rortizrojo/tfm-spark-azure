@@ -37,11 +37,15 @@ commandCopyResources="hdfs dfs -put resources resources"
 commandExecuteSparkSubmit="spark-submit --conf spark.yarn.maxAppAttempts=1 --master yarn --deploy-mode cluster --class tfm.Main cleaning_lib.jar"
 #commandExecuteSparkSubmit="echo \"testing\""
 
+echo "SSH Hostname: $sshHostName"
+
 #Ejecución de comandos
 echo "Ejecutando comando: $commandCreateInputFolder"
+echo "Ejecutando comando: $commandCopyResources"
 echo "Ejecutando comando: $command"
-echo "SSH Hostname: $sshHostName"
-echo "Ejecutando spark-submit: $commandExecuteSparkSubmit"
+echo "Ejecutando comando: $commandExecuteSparkSubmit"
+echo "Ejecutando comando: $commandDeleteFolder"
+
 sshpass -p 'tfmPassword.2019' ssh -tt $sshHostName -o StrictHostKeyChecking=no "$commandCreateInputFolder;$commandCopyResources;$command;$commandExecuteSparkSubmit;$commandDeleteFolder"
 
 exit
