@@ -13,6 +13,7 @@ node {
             ls -la
             az login --service-principal -u http://ServicePrincipalJenkins --password 59a0937b-ecbe-4be4-a104-d8020dc63dd5 --tenant f07087f5-7fe3-4ffe-9c74-296b39ef9ca8
             bash ./deploy.sh -i $id_suscripcion -g $grupo_recursos -n $nombre_despliegue -l westeurope
+            bash ./storage-create.sh $nombre_cuenta $contenedor
         """
     }
 }
