@@ -1,5 +1,5 @@
 node {
-    def nombre_despliegue = 'despliequeFicheros'
+    def nombre_despliegue = 'azure-storage-creation'
     stage('Preparation') { // for display purposes
         git branch: 'azure-storage-creation',
                 credentialsId: 'gitlab-credentials',
