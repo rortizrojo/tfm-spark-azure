@@ -92,31 +92,14 @@ class NLPProcesor(columnData:String) extends Serializable {
       outputString
     })
 
-    logger.info("Comenzado proceso de eliminación de apóstrofes ambiguos")
-//    val ambiguousApostropheRemoved = model.transform(data).drop("document", "sentence").map(
-//      x => x match {
-//      case Row(value: String, tokenArray: mutable.WrappedArray[Row], posArray: mutable.WrappedArray[Row]) =>
-//        {
-//          val tokens = tokenArray.map(token => token.getString(3)).toArray
-//          val pos_tags = posArray.map(pos => pos.getString(3)).toArray
-//          val procesedTokens = process(tokens, pos_tags)
-//          val outputList = procesedTokens.filter(x => !x.isEmpty).map(x => x match {
-//            case Some(_) => x.get
-//            case None => ""
-//          })
-//          val outputString = outputList.mkString(" ")
-//          //println("Ambiguos : cadena original:" + value  + " --> " + outputString)
-//          outputString
-//        }
-//      case _ => "Un matched"
-//    }).toDF()
-
-    logger.info("Comenzado proceso de eliminación de apóstrofes no ambiguos")
+    logger.info("Proceso de eliminación de apóstrofes ambiguos")
     val ambiguousApostropheRemoved= model
       .transform(data)
       .drop("document", "sentence")
       .withColumn(columnData,udfAmbiguos(col(columnData), col("token"), col("pos")) )
       .drop("token", "pos")
+
+    logger.info("Proceso de eliminación de apóstrofes no ambiguos")
     ambiguousApostropheRemoved.withColumn(columnData,udfNoAmbiguos(col(columnData))).toDF()
 
   }
