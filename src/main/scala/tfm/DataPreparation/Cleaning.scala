@@ -1,7 +1,7 @@
 package tfm.DataPreparation
 
 import org.apache.spark.sql.DataFrame
-import org.apache.spark.sql.functions.udf
+import org.apache.spark.sql.functions.{col, regexp_replace, udf}
 import tfm.NLPProcesor
 
 class Cleaning {
@@ -21,19 +21,6 @@ class Cleaning {
   def apostropheCleaning(df:DataFrame, column: String): DataFrame={
     val model = new NLPProcesor(column)
     model.transform(df)
-
-//    import tfm.config.Config.spark.implicits._
-//    val listExpected = List(
-//      ("I would like to ride a bike"),
-//      ("She had liked to ride a bike"),
-//      ("They cannot ride a bike"),
-//      ("you are riding a bike"),
-//      ("He will ride a bike"),
-//      ("That bike is Pedro"),
-//      ("It is the bike I do not want to ride"),
-//      ("This is Pedro bike")
-//      )
-//    tfm.config.Config.spark.sparkContext.parallelize(listExpected).toDF().orderBy("value")
   }
 
 
@@ -42,15 +29,36 @@ class Cleaning {
     * Separación de palabras con mayúsculas. GoodBye --> Good Bye
     */
   def attachedWordsCleaning(df:DataFrame, column: String): DataFrame={
-    ???
+    import scala.util.matching.Regex
+    val regexCamelCase = "[A-Z][^A-Z]+"
+    val keyValPattern:Regex = regexCamelCase.r
+
+    val attachedWordsCleaningUDF = udf { s: String =>
+      s.split(" ").map(
+        x =>
+          {
+            if(keyValPattern.findAllMatchIn(x).isEmpty)
+              x
+            else
+              keyValPattern.findAllMatchIn(x).mkString(" ")
+          }).mkString(" ")
+    }
+    df.withColumn(column,attachedWordsCleaningUDF(col(column)))
   }
 
 
   /**
     * Eliminación de caracteres definidos por usuario como ç o ñ. çhola --> hola
     */
-  def charactersCleaning(df:DataFrame, column: String): DataFrame={
-    ???
+  def charactersCleaning(df:DataFrame, column: String, charList: List[Char]): DataFrame={
+    /** FoldLeft sirve para aplicar una operación a los elementos de una colección dando el valor inicial que se indique.
+      * En este caso para la lista de caracteres List(ç,ñ) lo que hace es poner el paréntesis al principio y luego aplica
+      * la operación "+" a todos los elementos, es decir concatenar los caracteres de la lista quedando "(çñ" una vez hecha
+      * la operación se le añade + ")" para que quede la expresión regular (ç|ñ) que servirá para eliminar estos caracteres
+      */
+    val regExpIntern = charList.foldLeft("")(_ + '|' +  _)
+    val regExp = "(" + regExpIntern.subSequence(1,regExpIntern.length ) + ")"
+    df.withColumn(column, regexp_replace(col(column), regExp, ""))
   }
 
   /**

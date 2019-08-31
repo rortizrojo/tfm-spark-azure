@@ -65,6 +65,32 @@ class CleaningTest extends FunSuite with DataFrameSuiteBase {
   }
 
 
+  test("testAttachedWordsCleaning") {
+    import spark.implicits._
+
+    val input1 = sc.parallelize(Seq( ("hola"), ("GoodBye my friend"))).toDF()
+    val input2 = sc.parallelize(Seq( ("hola"), ("GoodBye my FRIEND"))).toDF()
+    val result1 = new Cleaning().attachedWordsCleaning(input1, "value")
+    val result2 = new Cleaning().attachedWordsCleaning(input2, "value")
+    val expected1 = sc.parallelize(Seq( ("hola"), ("Good Bye my friend"))).toDF()
+    val expected2 = sc.parallelize(Seq( ("hola"), ("Good Bye my FRIEND"))).toDF()
+
+    assertDataFrameEquals(expected1,result1)
+    assertDataFrameEquals(expected2,result2)
+  }
+
+  test("testCharactersCleaning") {
+    import spark.implicits._
+    val charList = List('ç', 'ñ')
+
+    val input = sc.parallelize(Seq(("çhola"), ("byñe"))).toDF()
+    val result = new Cleaning().charactersCleaning(input, "value",charList ).orderBy("value")
+    val expected = sc.parallelize(Seq(("hola"), ("bye"))).toDF().orderBy("value")
+
+    assertDataFrameEquals(expected,result )
+
+  }
+
   test("testExpressionsCleaning") {
 
   }
@@ -77,9 +103,6 @@ class CleaningTest extends FunSuite with DataFrameSuiteBase {
 
   }
 
-  test("testAttachedWordsCleaning") {
-
-  }
 
   test("testStandarizingCleaning") {
 
@@ -95,9 +118,7 @@ class CleaningTest extends FunSuite with DataFrameSuiteBase {
 
 
 
-  test("testCharactersCleaning") {
 
-  }
 
   test("testDecodingCleaning") {
 
