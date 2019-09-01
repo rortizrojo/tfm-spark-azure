@@ -91,45 +91,106 @@ class CleaningTest extends FunSuite with DataFrameSuiteBase {
 
   }
 
+  test("testContentCleaning") {
+    import spark.implicits._
+    val wordList = List("good","bad")
+
+    val input = sc.parallelize(Seq(("holabad"), ("good bye"))).toDF()
+    val result = new Cleaning().contentCleaning(input, "value", wordList ).orderBy("value")
+    val expected = sc.parallelize(Seq(("holabad"), (" bye"))).toDF().orderBy("value")
+
+    assertDataFrameEquals(expected,result )
+
+  }
+
+  test("testDecodingCleaning") {
+    import spark.implicits._
+
+    val input = sc.parallelize(Seq(("hola 編"),("bye"))).toDF()
+    val result = new Cleaning().decodingCleaning(input, "value").orderBy("value")
+    val expected = sc.parallelize(Seq(("hola "),("bye"))).toDF().orderBy("value")
+
+    assertDataFrameEquals(expected,result )
+  }
+
   test("testExpressionsCleaning") {
-
-  }
-
-  test("testUrlCleaning") {
-
-  }
-
-  test("testHtmlCleaning") {
-
-  }
+    import spark.implicits._
+    val expressionList = List("good bye","bad", "friend")
 
 
-  test("testStandarizingCleaning") {
+    val input = sc.parallelize(Seq(("hola"), ("good bye my friend"))).toDF()
+    val result = new Cleaning().expressionsCleaning(input, "value", expressionList).orderBy("value")
+    val expected = sc.parallelize(Seq(("hola"),(" my "))).toDF().orderBy("value")
 
-  }
-
-  test("testInitialFinalApostropheCleaning") {
-
+    assertDataFrameEquals(expected,result )
   }
 
   test("testGrammarCleaning") {
 
   }
 
+  test("testHtmlCleaning") {
+    import spark.implicits._
+    val aditionalTokens = List("&bnsp;")
 
+    val input = sc.parallelize(Seq(("hola"), ("<html>&bnsp;hola</html>"))).toDF()
+    val result = new Cleaning().htmlCleaning(input, "value", aditionalTokens).orderBy("value")
+    val expected = sc.parallelize(Seq(("hola"),("hola"))).toDF().orderBy("value")
 
+    assertDataFrameEquals(expected,result )
+  }
 
+  test("testInitialFinalApostropheCleaning") {
+    import spark.implicits._
 
-  test("testDecodingCleaning") {
+    val input = sc.parallelize(Seq(("'hola'"), ("'ho'l'a'"))).toDF()
+    val result = new Cleaning().initialFinalApostropheCleaning(input, "value").orderBy("value")
+    val expected = sc.parallelize(Seq(("hola"),("ho'l'a"))).toDF().orderBy("value")
 
+    assertDataFrameEquals(expected,result )
   }
 
   test("testSlangCleaning") {
+    import spark.implicits._
+
+    val input = sc.parallelize(Seq(("hola caracola"), ("AFAIK"))).toDF()
+    val result = new Cleaning().slangCleaning(input, "value").orderBy("value")
+    val expected = sc.parallelize(Seq(("hola caracola"), ("As Far As I Know"))).toDF().orderBy("value")
+
+    assertDataFrameEquals(expected,result )
+  }
+
+  test("testStandarizingCleaning") {
 
   }
 
-  test("testContentCleaning") {
+  test("testUrlCleaning") {
+    import spark.implicits._
 
+    val input1 = sc.parallelize(Seq(("hola"), ("http://aaa.com https://bbb.com:8080 www.google.es hola"))).toDF()
+    val input2 = sc.parallelize(Seq(("hola"), ("www.gplan.co.uk https://subdominio.bbb.com:8080 clogau.co.uk hola"))).toDF()
+    val input3 = sc.parallelize(Seq(("hola"), ("http://aaa.com https://subdominio.bbb.com:8080 hola"))).toDF()
+    val result1 = new Cleaning().urlCleaning(input1, "value", "OFF").orderBy("value")
+    val result2 = new Cleaning().urlCleaning(input2, "value", "ON").orderBy("value")
+    val result3 = new Cleaning().urlCleaning(input3, "value", "CAPITALIZED").orderBy("value")
+    val expected1 = sc.parallelize(Seq(("hola"), ("   hola"))).toDF().orderBy("value")
+    val expected2 = sc.parallelize(Seq(("hola"), ("gplan bbb clogau hola"))).toDF().orderBy("value")
+    val expected3 = sc.parallelize(Seq(("hola"), ("Aaa Bbb hola"))).toDF().orderBy("value")
+
+    assertDataFrameEquals(expected1,result1 )
+    assertDataFrameEquals(expected2,result2 )
+    assertDataFrameEquals(expected3,result3 )
   }
+
+
+
+
+
+
+
+
+
+
+
 
 }
