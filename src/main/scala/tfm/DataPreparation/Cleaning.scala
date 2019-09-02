@@ -12,9 +12,23 @@ case class Slang(Slang: String, Meaning: String)
 class Cleaning extends Serializable {
   def clean(df: DataFrame): DataFrame = {
     val column = "Queries"
-    val dfApostropheCleaned = apostropheCleaning(df, column)
+    val charList = List('ç', 'ñ')
+    val wordList = List("good","bad")
+    val expressionList = List("good bye","bad", "friend")
+    val aditionalTokens = List("&bnsp;")
 
-    dfApostropheCleaned
+    val dfFinal = df
+      .transform(apostropheCleaning(column))
+      .transform(attachedWordsCleaning(column))
+      .transform(charactersCleaning(column, charList))
+      .transform(contentCleaning(column,wordList))
+      .transform(decodingCleaning(column))
+      .transform(expressionsCleaning(column,expressionList))
+      .transform(htmlCleaning(column, aditionalTokens))
+      .transform(initialFinalApostropheCleaning(column))
+      .transform(slangCleaning(column))
+      .transform(urlCleaning(column, "OFF"))
+    dfFinal
   }
 
   /**
@@ -24,7 +38,7 @@ class Cleaning extends Serializable {
    * @param column Columna en la que hay que realizar el proceso.
    * @return El DataFrame con los datos modificados en la columna indicada
    */
-  def apostropheCleaning(df: DataFrame, column: String): DataFrame = {
+  def apostropheCleaning(column: String)(df: DataFrame): DataFrame = {
     val model = new NLPProcesor(column)
     model.transform(df)
   }
@@ -37,7 +51,7 @@ class Cleaning extends Serializable {
    * @param column Columna en la que hay que realizar el proceso.
    * @return El DataFrame con los datos modificados en la columna indicada
    */
-  def attachedWordsCleaning(df: DataFrame, column: String): DataFrame = {
+  def attachedWordsCleaning(column: String)(df: DataFrame): DataFrame = {
     import scala.util.matching.Regex
     val regexCamelCase = "[A-Z][^A-Z]+"
     val keyValPattern: Regex = regexCamelCase.r
@@ -63,7 +77,7 @@ class Cleaning extends Serializable {
    * @param charList Lista de caracteres que se desean eliminar de la columna
    * @return El DataFrame con los datos modificados en la columna indicada
    */
-  def charactersCleaning(df: DataFrame, column: String, charList: List[Char]): DataFrame = {
+  def charactersCleaning(column: String, charList: List[Char])(df: DataFrame): DataFrame = {
     /** FoldLeft sirve para aplicar una operación a los elementos de una colección dando el valor inicial que se indique.
      * En este caso para la lista de caracteres List(ç,ñ) lo que hace es poner el paréntesis al principio y luego aplica
      * la operación "+" a todos los elementos, es decir concatenar los caracteres de la lista quedando "(çñ" una vez hecha
@@ -83,7 +97,7 @@ class Cleaning extends Serializable {
    * @param wordList Lista de palabras que se desean eliminar de la columna
    * @return El DataFrame con los datos modificados en la columna indicada
    */
-  def contentCleaning(df: DataFrame, column: String, wordList: List[String]): DataFrame = {
+  def contentCleaning(column: String, wordList: List[String])(df: DataFrame): DataFrame = {
     import scala.util.matching.Regex
 
     val regExpIntern = wordList.foldLeft("")(_ + '|' + _)
@@ -106,7 +120,7 @@ class Cleaning extends Serializable {
    * @param column Columna en la que hay que realizar el proceso.
    * @return El DataFrame con los datos modificados en la columna indicada
    */
-  def decodingCleaning(df: DataFrame, column: String): DataFrame = {
+  def decodingCleaning(column: String)(df: DataFrame): DataFrame = {
     df.withColumn(column, regexp_replace(col(column), "[^\\x00-\\x7F]", ""))
   }
 
@@ -118,19 +132,13 @@ class Cleaning extends Serializable {
    * @param expresionList Lista de expresiones que se desean eliminar de la columna indicada
    * @return El DataFrame con los datos modificados en la columna indicada
    */
-  def expressionsCleaning(df: DataFrame, column: String, expresionList: List[String]): DataFrame = {
+  def expressionsCleaning(column: String, expresionList: List[String])(df: DataFrame): DataFrame = {
 
     val regExpIntern = expresionList.foldLeft("")(_ + ")|(" + _)
     val regExp = regExpIntern.subSequence(2, regExpIntern.length) + ")"
     df.withColumn(column, regexp_replace(col(column), regExp, ""))
   }
 
-  /**
-   * Corrección gramática. "she love him" -->  "She loves him"
-   */
-  def grammarCleaning(df: DataFrame, column: String): DataFrame = {
-    ???
-  }
 
   /**
    * Extración de texto de HTML. "<html>&bnsp;hola</html>" --> "hola"
@@ -141,7 +149,7 @@ class Cleaning extends Serializable {
    * @return El DataFrame con los datos modificados en la columna indicada
    *
    */
-  def htmlCleaning(df: DataFrame, column: String, aditionalTokens: List[String]): DataFrame = {
+  def htmlCleaning(column: String, aditionalTokens: List[String])(df: DataFrame): DataFrame = {
     val regExpIntern = aditionalTokens.foldLeft("")(_ + ")|(" + _)
     val regExp = regExpIntern.subSequence(2, regExpIntern.length) + ")"
     val regexHtmlTags = "(<.*?>)"
@@ -159,15 +167,19 @@ class Cleaning extends Serializable {
    * @param column Columna en la que hay que realizar el proceso.
    * @return El DataFrame con los datos modificados en la columna indicada
    */
-  def initialFinalApostropheCleaning(df: DataFrame, column: String): DataFrame = {
+  def initialFinalApostropheCleaning(column: String)(df: DataFrame): DataFrame = {
     val initialFinalRegExp = "(^'|'$)"
     df.withColumn(column, regexp_replace(col(column), initialFinalRegExp, ""))
   }
 
   /**
    * Traducción de siglas o abreviaturas. "AFAIK" --> "As Far As I Know"
+   *
+   * @param df     DataFrame con los datos de entrada.
+   * @param column Columna en la que hay que realizar el proceso.
+   * @return El DataFrame con los datos modificados en la columna indicada
    */
-  def slangCleaning(df: DataFrame, column: String): DataFrame = {
+  def slangCleaning(column: String)(df: DataFrame): DataFrame = {
     import config.Config.spark.implicits._
     val path = "resources/slang_dict.csv"
     val slangDict: Array[Slang] = config.Config.spark
@@ -196,16 +208,15 @@ class Cleaning extends Serializable {
   }
 
   /**
+   * Limpieza de URL. www.google.com --> Google, www.google.com --> [None]
    *
+   * @param df     DataFrame con los datos de entrada.
+   * @param column Columna en la que hay que realizar el proceso.
+   * @param keepDomain OFF: Elimina la URL completa; ON: Deja el nombre del dominio; CAPITALIZED: Deja el nombre del
+   *                   dominio con la primera letra en mayúscula
+   * @return El DataFrame con los datos modificados en la columna indicada
    */
-  def standarizingCleaning(df: DataFrame, column: String): DataFrame = {
-    ???
-  }
-
-  /**
-   * --> Limpieza de URL. www.google.com --> Google, www.google.com --> [None]
-   */
-  def urlCleaning(df: DataFrame, column: String, keepDomain: String): DataFrame = {
+  def urlCleaning(column: String, keepDomain: String)(df: DataFrame): DataFrame = {
     import scala.util.matching.Regex
 
     val regExp = "^(http:\\/\\/www\\.|site:|https:\\/\\/www\\.|http:\\/\\/|https:\\/\\/)?[a-z0-9]+([\\-\\.]{1}[a-z0-9]+)*\\.[a-z]{2,5}(:[0-9]{1,5})?(\\/.*)?$"
@@ -224,20 +235,45 @@ class Cleaning extends Serializable {
     df.withColumn(column, urlCleaningUDF(col(column)))
   }
 
-  def remove_urls(input_data: String, keyValPattern: Regex): String = {
+  /**
+   * Elimina una URL de una cadena de texto
+   *
+   * @param input_data Cadena de texto de entrada
+   * @param urlRegex Expresión regular que detecta una URL
+   * @return Cadena de texto con la url eliminada
+   */
+  private def remove_urls(input_data: String, urlRegex: Regex): String = {
     val value = input_data.split(" ").map(x => {
-      keyValPattern.replaceAllIn(x, "")
+      urlRegex.replaceAllIn(x, "")
     }).mkString(" ")
     value
   }
 
-  def remove_urls_keep_domain(input_data: String,keepDomain: String, regex: Regex): String = {
-    input_data.split(" ").map(x => remove_urls_keep_domain_in_token(x, keepDomain, regex)).mkString(" ")
+  /**
+   * Elimina una URL de una cadena de texto manteniendo el dominio
+   * EJ: www.google.com --> google
+   *
+   *
+   * @param input_data Cadena de texto de entrada
+   * @param urlRegex Expresión regular que detecta una URL
+   * @return Cadena de texto con el dominio
+   */
+  private def remove_urls_keep_domain(input_data: String,keepDomain: String, urlRegex: Regex): String = {
+    input_data.split(" ").map(x => remove_urls_keep_domain_in_token(x, keepDomain, urlRegex)).mkString(" ")
   }
 
-  def remove_urls_keep_domain_in_token(token: String,keepDomain:String,  regex: Regex): String = {
+
+  /**
+   *
+   * @param token      Cadena de texto de entrada
+   * @param keepDomain OFF: Elimina la URL completa; ON: Deja el nombre del dominio; CAPITALIZED: Deja el nombre del
+   *                   dominio con la primera letra en mayúscula
+   * @param urlRegex Expresión regular de una URL
+   * @return Cadena de texto con el dominio
+   */
+  private def remove_urls_keep_domain_in_token(token: String,keepDomain:String,  urlRegex: Regex): String = {
     import java.net.URI
-    if (!regex.findAllIn(token).isEmpty) {
+    if (!urlRegex.findAllIn(token).isEmpty) {
       val url = new URI(token)
       val hostname = url.getHost
       val hostname_tokens =

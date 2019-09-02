@@ -11,10 +11,11 @@ class Filtering {
     val column = "Queries"
 
     //Elegir uno de los dos siguientes algoritmos, no los dos
-    val dfReduced = reduceDuplicatesToOne(df, column)
-    //val dfDeletedDuplicates = deleteDuplicates(df, column)
-    val dfDeletedNullRows = deleteNoDataRows(dfReduced, column)
-    dfDeletedNullRows
+    df
+      .transform(reduceDuplicatesToOne(column))
+      .transform(deleteNoDataRows(column))
+      //.transform(deleteDuplicates(column))
+
   }
 
   /**
@@ -24,7 +25,7 @@ class Filtering {
     * @param column Columna en la que hay que realizar el proceso.
     * @return El DataFrame con las filas duplicadas eliminadas excepto una
     */
-  def reduceDuplicatesToOne(df:DataFrame, column: String): DataFrame = {
+  def reduceDuplicatesToOne(column: String)(df:DataFrame): DataFrame = {
     df.dropDuplicates(column)
   }
 
@@ -35,7 +36,7 @@ class Filtering {
     * @param column Columna en la que hay que realizar el proceso.
     * @return El DataFrame con las filas duplicadas eliminadas
     */
-  def deleteDuplicates(df:DataFrame, column: String): DataFrame = {
+  def deleteDuplicates(column: String)(df:DataFrame): DataFrame = {
     df
       .withColumn("cnt", count("*").over(Window.partitionBy(col(column))))
       .where(col("cnt")===1).drop(col("cnt"))
@@ -48,7 +49,7 @@ class Filtering {
     * @param column Columna en la que hay que realizar el proceso.
     * @return El DataFrame con las filas sin datos eliminadas
     */
-  def deleteNoDataRows(df:DataFrame, column: String): DataFrame = {
+  def deleteNoDataRows(column: String)(df:DataFrame): DataFrame = {
     df.filter(!col(column).rlike("^(\\s|\t|\n)*$"))
   }
 

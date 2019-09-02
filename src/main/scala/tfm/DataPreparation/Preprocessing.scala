@@ -7,23 +7,22 @@ import org.apache.spark.sql.functions.{col, lower, regexp_replace, udf}
 class Preprocessing {
 
   def preprocess(df: DataFrame):DataFrame={
-    val logger = Logger.getLogger(this.getClass.getName)
+    //val logger = Logger.getLogger(this.getClass.getName)
 
     val column = "Queries"
     val regExp = "[0-9]+"
 
-    val dfReparted = df.repartition(8)
-    logger.warn("Numero de elementos antes de limpieza: " + dfReparted.count())
-    val dfNullCleaned = nullCleaning(dfReparted, column)
-    logger.warn("Numero de elementos despues de limpieza: " + dfNullCleaned.count())
-    val dfLowered = toLower(dfNullCleaned, column)
-    val dfNlenghtCleaned = nLenWordCleaning(dfLowered, column, 3)
-    val dfStartCleaned = startsWithCleaner(dfNlenghtCleaned, column, regExp)
-    val dfReplacerCleaning = replacerCleaning(dfStartCleaned,column, regExp, "")
-    val dfRegExpression = regularExprCleaning(dfReplacerCleaning, column, regExp)
-    val dfSpecialCharCleaning = specialCharCleaning(dfRegExpression, column)
+    val dfFinal = df
+      .repartition(8)
+      .transform(nullCleaning(column))
+      .transform(toLower(column))
+      .transform(nLenWordCleaning(column,3))
+      .transform(startsWithCleaner(column, regExp))
+      .transform(replacerCleaning(column, regExp, ""))
+      .transform(regularExprCleaning(column, regExp))
+      .transform(specialCharCleaning(column))
 
-    dfSpecialCharCleaning
+    dfFinal
   }
 
   /**
@@ -33,7 +32,7 @@ class Preprocessing {
     * @param column Columna en la que hay que realizar el reemplazo.
     * @return El DataFrame con la columna indicada modificada o añadida si no existe.
     */
-  def nullCleaning(df: DataFrame, column: String):DataFrame={
+  def nullCleaning(column: String)(df: DataFrame):DataFrame={
     df.filter(col(column).isNotNull)
   }
 
@@ -44,7 +43,7 @@ class Preprocessing {
     * @param column Columna en la que hay que realizar el reemplazo.
     * @return El DataFrame con la columna indicada modificada o añadida si no existe.
     */
-  def toLower(df: DataFrame, column: String): DataFrame = {
+  def toLower(column: String)(df: DataFrame): DataFrame = {
     df.withColumn(column, lower(col(column)).alias(column))
   }
 
@@ -56,7 +55,7 @@ class Preprocessing {
     * @param wordLengthToDelete Longitud máxima de una palabra
     * @return El DataFrame con la columna indicada modificada o añadida si no existe.
     */
-  def nLenWordCleaning(df:DataFrame, column:String, wordLengthToDelete: Int): DataFrame ={
+  def nLenWordCleaning(column:String, wordLengthToDelete: Int)(df:DataFrame): DataFrame ={
 
     val nlengthCleanUDF = udf { s: String =>
       //print("Raw:" + s)
@@ -73,7 +72,7 @@ class Preprocessing {
     * @param column Columna en la que hay que realizar el reemplazo.
     * @return El DataFrame con la columna indicada modificada o añadida si no existe.
     */
-  def specialCharCleaning(df: DataFrame, column: String): DataFrame = {
+  def specialCharCleaning(column: String)(df:DataFrame): DataFrame = {
     val special = "(!|\"|#|\\$|%|&|'|\\(|\\)|\\*|\\+|,|-|\\.|\\/|:|;|<|=|>|\\?|@|\\[|\\\\|\\]|\\^|_|`|\\{|\\||\\}|~)"
     df.withColumn(column, regexp_replace(col(column),special, " "))
   }
@@ -87,7 +86,7 @@ class Preprocessing {
     * @param regExpr Expresión regular para el reemplazo.
     * @return El DataFrame con la columna indicada modificada o añadida si no existe.
     */
-  def regularExprCleaning(df: DataFrame,column: String, regExpr: String): DataFrame = {
+  def regularExprCleaning(column: String, regExpr: String)(df:DataFrame): DataFrame = {
     import scala.util.matching.Regex
 
     val keyValPattern:Regex = regExpr.r
@@ -111,7 +110,7 @@ class Preprocessing {
     * @param replacement Cadena que reemplaza el texto que coincida con la expresión regular.
     * @return El DataFrame con la columna indicada modificada o añadida si no existe.
     */
-  def replacerCleaning(df: DataFrame, column: String,regExpr: String, replacement: String): DataFrame = {
+  def replacerCleaning(column: String,regExpr: String, replacement: String)(df:DataFrame): DataFrame = {
     df.withColumn(column,regexp_replace(col(column),regExpr, replacement ))
   }
 
@@ -123,7 +122,7 @@ class Preprocessing {
     * @param regExpr Expresión regular para la eliminación del inicio de la cadena.
     * @return El DataFrame con la columna indicada modificada o añadida si no existe.
     */
-  def startsWithCleaner(df: DataFrame, column: String, regExpr: String): DataFrame = {
+  def startsWithCleaner(column: String, regExpr: String)(df:DataFrame): DataFrame = {
     df.withColumn(column,regexp_replace(col(column),"^" + regExpr, "" ))
   }
 }

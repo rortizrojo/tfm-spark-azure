@@ -1,12 +1,16 @@
 package tfm
 
 import org.apache.log4j.Logger
+import org.joda.time.format.DateTimeFormat
 import tfm.DataPreparation.{Cleaning, Filtering, Preprocessing}
 import tfm.config.Config
 
 
 object Main {
   def main(args : Array[String]) {
+    import org.joda.time.DateTime
+
+    val date: String = DateTimeFormat.forPattern("yyyy-MM-dd").print(DateTime.now())
 
     val logger = Logger.getLogger(this.getClass.getName)
     logger.warn("Inicio de proceso de limpieza")
@@ -28,7 +32,7 @@ object Main {
       .write.format("com.databricks.spark.csv")
       .mode("overwrite")
       .option("header", "true")
-      .save("mydata.csv")
+      .save(s"output/${date}-output.csv")
     logger.warn("Finalizado proceso de limpieza")
   }
 }
