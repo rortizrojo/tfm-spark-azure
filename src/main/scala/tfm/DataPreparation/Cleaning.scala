@@ -1,10 +1,9 @@
 package tfm.DataPreparation
 
 import org.apache.spark.sql.DataFrame
-import org.apache.spark.sql.functions.{ascii, col, decode, encode, expr, regexp_replace, udf}
+import org.apache.spark.sql.functions.{col, regexp_replace, udf}
 import tfm.{NLPProcesor, config}
 
-import scala.util.{Failure, Success, Try}
 import scala.util.matching.Regex
 
 case class Slang(Slang: String, Meaning: String)
@@ -180,8 +179,8 @@ class Cleaning extends Serializable {
    * @return El DataFrame con los datos modificados en la columna indicada
    */
   def slangCleaning(column: String)(df: DataFrame): DataFrame = {
-    import config.Config.spark.implicits._
     val path = "resources/slang_dict.csv"
+    import config.Config.spark.implicits._
     val slangDict: Array[Slang] = config.Config.spark
       .read
       .format("com.databricks.spark.csv")

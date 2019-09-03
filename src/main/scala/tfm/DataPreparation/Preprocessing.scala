@@ -13,7 +13,6 @@ class Preprocessing {
     val regExp = "[0-9]+"
 
     val dfFinal = df
-      .repartition(8)
       .transform(nullCleaning(column))
       .transform(toLower(column))
       .transform(nLenWordCleaning(column,3))

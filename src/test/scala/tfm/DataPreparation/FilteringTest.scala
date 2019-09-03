@@ -13,7 +13,7 @@ class FilteringTest extends FunSuite with DataFrameSuiteBase{
     import spark.implicits._
 
     val input = sc.parallelize(Seq(("hola"), ("hola"), ("adiós"), ("Adiós"))).toDF()
-    val result = new Filtering().deleteDuplicates(input, "value").orderBy("value")
+    val result = new Filtering().deleteDuplicates("value")(input).orderBy("value")
     val expected = sc.parallelize(Seq(("adiós"), ("Adiós"))).toDF().orderBy("value")
 
     assertDataFrameEquals(expected,result )
@@ -23,7 +23,7 @@ class FilteringTest extends FunSuite with DataFrameSuiteBase{
     import spark.implicits._
 
     val input = sc.parallelize(Seq(("hola"), ("hola"), ("adiós"), ("Adiós"))).toDF()
-    val result = new Filtering().reduceDuplicatesToOne(input, "value").orderBy("value")
+    val result = new Filtering().reduceDuplicatesToOne("value")(input).orderBy("value")
     val expected = sc.parallelize(Seq(("hola"),("adiós"), ("Adiós"))).toDF().orderBy("value")
 
     assertDataFrameEquals(expected,result )
@@ -42,7 +42,7 @@ class FilteringTest extends FunSuite with DataFrameSuiteBase{
         ("\n", "6")
       )
     ).toDF()
-    val result = new Filtering().deleteNoDataRows(input, "_1").orderBy("_1")
+    val result = new Filtering().deleteNoDataRows( "_1")(input).orderBy("_1")
     val expected = sc.parallelize(Seq(
       ("hola", "1"),
       ("Hola amigos", "2"))).toDF().orderBy("_1")

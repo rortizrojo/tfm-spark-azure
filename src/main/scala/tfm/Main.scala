@@ -18,14 +18,16 @@ object Main {
    // spark.sparkContext.setLogLevel("WARN")
 
     val pathFile = "input/muestraSubido.csv"
-    val df = spark.read.option("header", true).option("delimiter","\t").csv(pathFile)
+    val dfInput = spark.read.option("header", true).option("delimiter","\t").csv(pathFile)
 
     logger.warn("Preprocesado")
-    val dfPreprocessed = new Preprocessing().preprocess(df)
+    val dfPreprocessed = new Preprocessing().preprocess(dfInput)
     logger.warn("Filtrado")
     val dfPreprocessedFiltered = new Filtering().filter(dfPreprocessed)
     logger.warn("Limpieza")
     val dfPreprocessedFilteredCleaned = new Cleaning().clean(dfPreprocessedFiltered)
+
+    logger.warn(s"Number of partitions: ${dfPreprocessedFilteredCleaned.rdd.getNumPartitions}")
 
     dfPreprocessedFilteredCleaned
       .coalesce(1)
