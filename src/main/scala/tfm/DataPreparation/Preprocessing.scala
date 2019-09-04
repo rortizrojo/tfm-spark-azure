@@ -10,7 +10,7 @@ class Preprocessing {
     //val logger = Logger.getLogger(this.getClass.getName)
 
     val column = "Queries"
-    val regExp = "[0-9]+"
+      val regExp = "[0-9]+"
 
     val dfFinal = df
       .transform(nullCleaning(column))
@@ -18,6 +18,17 @@ class Preprocessing {
       .transform(nLenWordCleaning(column,3))
       .transform(startsWithCleaner(column, regExp))
       .transform(replacerCleaning(column, regExp, ""))
+      //Reemplazo de puntos por comas en los números decimales para evitar errores en Power BI
+      .transform(replacerCleaning("Max_cpc", "\\.", ","))
+      .transform(replacerCleaning("User_latitude", "\\.", ","))
+      .transform(replacerCleaning("User_longitude", "\\.", ","))
+      .transform(replacerCleaning("Avg_cpc", "\\.", ","))
+      .transform(replacerCleaning("Avg_position", "\\.", ","))
+      .transform(replacerCleaning("Cost_keyword", "\\.", ","))
+      .transform(replacerCleaning("Cost", "\\.", ","))
+      .transform(replacerCleaning("Net_revenue", "\\.", ","))
+      .transform(replacerCleaning("Profit_unitario", "\\.", ","))
+      .transform(replacerCleaning("ROI", "\\.", ","))
       .transform(regularExprCleaning(column, regExp))
       .transform(specialCharCleaning(column))
 
