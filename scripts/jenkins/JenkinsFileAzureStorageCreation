@@ -1,19 +1,19 @@
 node {
-    def nombre_despliegue = 'despliequeFicheros'
+    def nombre_despliegue = 'azure-storage-creation'
     stage('Preparation') { // for display purposes
-        git branch: 'uploadFile',
+        git branch: 'azure-storage-creation',
                 credentialsId: 'gitlab-credentials',
                 url: 'https://gitlab.com/rortizrojo/tfm-spark-azure.git'
     }
     stage('Subida de fichero'){
         sh """
             cd scripts/azure/
-            python3 modifyStorageParameters.py -sf storage/parameters.json -sn $nombre_cuenta 
+            python3 modifyStorageParameters.py -sf storage/parameters.json -sn $nombre_cuenta
             cd storage/
             ls -la
             az login --service-principal -u http://ServicePrincipalJenkins --password 59a0937b-ecbe-4be4-a104-d8020dc63dd5 --tenant f07087f5-7fe3-4ffe-9c74-296b39ef9ca8
             bash ./deploy.sh -i $id_suscripcion -g $grupo_recursos -n $nombre_despliegue -l westeurope
-            bash ./upload.sh $nombre_cuenta $contenedor ../../../input/muestraFicheroPequenya.csv muestraSubido.csv
+            bash ./storage-create.sh $nombre_cuenta $contenedor
         """
     }
 }

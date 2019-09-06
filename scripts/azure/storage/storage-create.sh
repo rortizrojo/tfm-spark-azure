@@ -3,9 +3,6 @@
 
 export AZURE_STORAGE_ACCOUNT=$1
 export container_name=$2
-export file_to_upload=$3
-export destination_file=$4
-
 
 end=`date -d "1 year" '+%Y-%m-%dT%H:%M:%SZ'`
 echo "Expire time: $end"
@@ -19,9 +16,3 @@ container_url_sas=$container_url?$sas_token
 container_url_sas_clean="${container_url_sas//\"/}"
 echo "Container clean path: $container_url_sas_clean"
 azcopy make $container_url_sas_clean
-
-file_name=$container_url/$destination_file?$sas_token
-file_url="${file_name//\"/}"
-echo "File clean: $file_url"
-azcopy copy $file_to_upload $file_url --recursive=true
-
