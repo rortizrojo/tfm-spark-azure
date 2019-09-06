@@ -12,13 +12,13 @@ node {
             python3 modifyStorageParameters.py -sf storage/parameters.json -sn $nombre_cuenta 
             cd storage/
             ls -la
-            az login --service-principal -u http://ServicePrincipalJenkins --password d5b275c3-fa02-4017-8884-1fdf47af3b1a --tenant f07087f5-7fe3-4ffe-9c74-296b39ef9ca8
+            az login --service-principal -u http://ServicePrincipalJenkins --password 59a0937b-ecbe-4be4-a104-d8020dc63dd5 --tenant f07087f5-7fe3-4ffe-9c74-296b39ef9ca8
             bash ./deploy.sh -i $id_suscripcion -g $grupo_recursos -n $nombre_despliegue -l westeurope 
             export DATA_LAKE_MAIN_PATH=abfs://${contenedor}@${nombre_cuenta}.dfs.core.windows.net
             az storage account keys list --account-name $nombre_cuenta > ficheroKeys
             cat ficheroKeys
             keyStorage=`python3 parserKeyStorage.py ficheroKeys`
-            bash ./upload.sh $nombre_cuenta \$keyStorage $contenedor ../../../input/MuestraDatos.csv muestraSubido.csv
+            bash ./upload.sh $nombre_cuenta \$keyStorage $contenedor ../../../input/muestraFicheroPequenya.csv muestraSubido.csv
         """
     }
 }
