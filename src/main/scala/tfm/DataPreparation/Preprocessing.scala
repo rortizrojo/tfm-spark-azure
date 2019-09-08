@@ -7,7 +7,9 @@ import org.apache.spark.sql.functions.{col, lower, regexp_replace, udf}
 class Preprocessing {
 
   def preprocess(df: DataFrame):DataFrame={
-    //val logger = Logger.getLogger(this.getClass.getName)
+
+    val logger = Logger.getLogger(this.getClass.getName)
+    logger.warn("Preprocesado")
 
     val column = "Queries"
       val regExp = "[0-9]+"

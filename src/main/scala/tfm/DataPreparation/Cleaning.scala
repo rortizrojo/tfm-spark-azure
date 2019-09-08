@@ -1,15 +1,22 @@
 package tfm.DataPreparation
 
+import org.apache.log4j.Logger
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions.{col, regexp_replace, udf}
-import tfm.{NLPProcesor, config}
+import tfm.NLPProcessor
+import tfm.config
 
 import scala.util.matching.Regex
 
 case class Slang(Slang: String, Meaning: String)
 
 class Cleaning extends Serializable {
+
   def clean(df: DataFrame): DataFrame = {
+
+    val logger = Logger.getLogger(this.getClass.getName)
+    logger.warn("Limpieza")
+
     val column = "Queries"
     val charList = List('ç', 'ñ')
     val wordList = List("good","bad")
@@ -38,7 +45,7 @@ class Cleaning extends Serializable {
    * @return El DataFrame con los datos modificados en la columna indicada
    */
   def apostropheCleaning(column: String)(df: DataFrame): DataFrame = {
-    val model = new NLPProcesor(column)
+    val model = new NLPProcessor(column)
     model.transform(df)
   }
 

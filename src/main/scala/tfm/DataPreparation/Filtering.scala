@@ -1,5 +1,6 @@
 package tfm.DataPreparation
 
+import org.apache.log4j.Logger
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions.{col, count}
@@ -7,6 +8,8 @@ import org.apache.spark.sql.functions.{col, count}
 class Filtering {
 
   def filter(df:DataFrame): DataFrame ={
+    val logger = Logger.getLogger(this.getClass.getName)
+    logger.warn("Filtrado")
 
     val column = "Queries"
 

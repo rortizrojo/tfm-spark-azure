@@ -12,7 +12,7 @@ import scala.collection.mutable
 
 case class Test(original: String, replace: String)
 
-class NLPProcesor(columnData:String) extends Serializable {
+class NLPProcessor(columnData:String) extends Serializable {
 
   @transient lazy val logger = Logger.getLogger(this.getClass.getName)
 
