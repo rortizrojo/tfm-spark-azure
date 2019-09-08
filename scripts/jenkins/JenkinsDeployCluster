@@ -1,6 +1,6 @@
 node {
     //def id_suscripcion = '5a08e9e0-83ee-4188-8fc2-18e16c7db524'
-    def nombre_despliegue = 'desplieque01082019'
+    def nombre_despliegue = 'despliegueCluster'
     try{
         stage('Preparation') { // for display purposes
             git branch: 'master',
