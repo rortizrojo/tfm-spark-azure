@@ -1,13 +1,12 @@
 node {
 
-    stage('Preparation') { // for display purposes
-        git branch: 'deleteCluster',
-                credentialsId: 'gitlab-credentials',
-                url: 'https://gitlab.com/rortizrojo/tfm-spark-azure.git'
-    }
+//    stage('Preparation') { // for display purposes
+//        git branch: 'deleteCluster',
+//                credentialsId: 'gitlab-credentials',
+//                url: 'https://gitlab.com/rortizrojo/tfm-spark-azure.git'
+//    }
 
-
-    stage('Creation Azure Storage'){
+    stage('Deleting '){
         sh """
             az hdinsight delete --name $clusterName --resource-group $resourceGroup --yes  
             #az identity delete --name $identity --resource-group $resourceGroup
@@ -15,12 +14,11 @@ node {
             #cd scripts/azure/
             #bash ./deleteContainer.sh $storageAccount \$keyStorage $container
 
-
             echo "Cluster: $clusterName" 
-            echo "Storage: $storageAccount"
             echo "Resource Group: $resourceGroup"
-            echo "Identity: $identity"
-            echo "Container: $container"
+            #echo "Storage: $storageAccount"
+            #echo "Identity: $identity"
+            #echo "Container: $container"
         """
     }
 }
