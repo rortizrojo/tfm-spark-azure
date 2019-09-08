@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 
 ficheroInput=$1
-outputPath=$1
+outputPath="inputMovido.csv"
 
 cluster_info=`az hdinsight list --resource-group  grupoRecursosTfm`
 cluster_name=`echo $cluster_info | jq -r ".[0].name"`
 sshUser=`echo $cluster_info | jq -r ".[0].properties.computeProfile.roles[0].osProfile.linuxOperatingSystemProfile.username"`
 pathAccount=`echo $cluster_info | jq -r ".[0].properties.storageProfile.storageaccounts[0].name"`
-DATA_LAKE_MAIN_PATH=abfs://contenedoralmacenamiento@${pathAccount}/
+container=`echo $cluster_info | jq -r ".[0].properties.storageProfile.storageaccounts[0].fileSystem`
+DATA_LAKE_MAIN_PATH=abfs://${container}@${pathAccount}/
 sshHostName=${sshUser}@${cluster_name}-ssh.azurehdinsight.net
 
 
@@ -37,7 +38,7 @@ commandCreateInputFolder1="hdfs dfs -mkdir /user/sshuser"
 commandCreateInputFolder2="hdfs dfs -mkdir /user/sshuser/input"
 command="hdfs dfs -cp $DATA_LAKE_MAIN_PATH$ficheroInput input/$outputPath"
 commandCopyResources="hdfs dfs -put resources resources"
-commandExecuteSparkSubmit="spark-submit --conf spark.yarn.maxAppAttempts=1 --driver-memory 10g --num-executors 3 --executor-memory 15g --executor-cores 4 --master yarn --deploy-mode cluster --class tfm.Main cleaning_lib.jar"
+commandExecuteSparkSubmit="spark-submit --conf spark.yarn.maxAppAttempts=1 --driver-memory 10g --num-executors 3 --executor-memory 15g --executor-cores 4 --master yarn --deploy-mode cluster --class tfm.Main cleaning_lib.jar input/$ficheroInput"
 #commandExecuteSparkSubmit="echo \"testing\""
 
 echo "SSH Hostname: $sshHostName"

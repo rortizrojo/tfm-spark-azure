@@ -34,8 +34,6 @@ object Main {
 
     logger.warn(s"Number of partitions: ${dfPreprocessedFilteredCleaned.rdd.getNumPartitions}")
 
-
-
     dfPreprocessedFilteredCleaned
       .coalesce(1)
       .write.format("com.databricks.spark.csv")
