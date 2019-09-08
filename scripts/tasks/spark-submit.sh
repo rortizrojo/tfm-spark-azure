@@ -36,7 +36,7 @@ commandDeleteFolder="rm -rf resources/"
 
 commandCreateInputFolder1="hdfs dfs -mkdir /user/sshuser"
 commandCreateInputFolder2="hdfs dfs -mkdir /user/sshuser/input"
-command="hdfs dfs -cp $DATA_LAKE_MAIN_PATH$ficheroInput input/$outputPath"
+command="hdfs dfs -cp ${DATA_LAKE_MAIN_PATH}input/$ficheroInput input/$outputPath"
 commandCopyResources="hdfs dfs -put resources resources"
 commandExecuteSparkSubmit="spark-submit --conf spark.yarn.maxAppAttempts=1 --driver-memory 10g --num-executors 3 --executor-memory 15g --executor-cores 4 --master yarn --deploy-mode cluster --class tfm.Main cleaning_lib.jar input/$ficheroInput"
 #commandExecuteSparkSubmit="echo \"testing\""
