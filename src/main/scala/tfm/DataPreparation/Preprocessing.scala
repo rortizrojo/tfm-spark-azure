@@ -4,6 +4,9 @@ import org.apache.log4j.Logger
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions.{col, lower, regexp_replace, udf}
 
+/**
+  * Clase que realiza el preproceso de los datos de un dataframe
+  */
 class Preprocessing {
 
   def preprocess(df: DataFrame):DataFrame={

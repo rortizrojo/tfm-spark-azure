@@ -10,6 +10,9 @@ import scala.util.matching.Regex
 
 case class Slang(Slang: String, Meaning: String)
 
+/**
+  * Clase que ejecuta funciones de limipieza sobre un dataframe
+  */
 class Cleaning extends Serializable {
 
   def clean(df: DataFrame): DataFrame = {
