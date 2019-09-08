@@ -6,6 +6,8 @@ import org.joda.time.format.DateTimeFormat
 import tfm.DataPreparation.{Cleaning, Filtering, Preprocessing}
 import org.apache.spark.sql.functions.col
 import tfm.config.Config
+import tfm.ML
+import tfm.ML.CountClassifier
 
 
 object Main {
@@ -37,7 +39,13 @@ object Main {
     logger.warn("Limpieza")
     val dfPreprocessedFilteredCleaned = new Cleaning().clean(dfPreprocessedFiltered)
 
+    val Array(trainDf, testDf) = dfPreprocessedFilteredCleaned.randomSplit(Array(0.8, 0.2))
+    val model = CountClassifier.train(trainDf)
+    CountClassifier.test(model, testDf)
+
     logger.warn(s"Number of partitions: ${dfPreprocessedFilteredCleaned.rdd.getNumPartitions}")
+
+
 
     dfPreprocessedFilteredCleaned
       .coalesce(1)
@@ -49,7 +57,6 @@ object Main {
     logger.warn("Finalizado proceso de limpieza")
 
     val timeEnd =DateTime.now()
-
     val p = new Period(timeStart, timeEnd )
     logger.warn("Total time elapsed: %02d:%02d:%02d.%03d".format(p.getHours, p.getMinutes, p.getSeconds, p.getMillis))
 

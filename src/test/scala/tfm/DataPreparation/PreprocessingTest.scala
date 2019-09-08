@@ -44,8 +44,8 @@ class PreprocessingTest extends FunSuite with DataFrameSuiteBase {
     import spark.implicits._
     val input = sc.parallelize(Seq((null, "PePe"),("juan",null), ("JuaN","peppito"))).toDF()
 
-    val reslut1 = new Preprocessing().nullCleaning("_1")(input)
-    val reslut2 = new Preprocessing().nullCleaning("_2")(input)
+    val reslut1 = new Preprocessing().nullCleaning(Seq("_1"))(input)
+    val reslut2 = new Preprocessing().nullCleaning(Seq("_2"))(input)
 
     val expected1 = sc.parallelize(Seq(("juan",null), ("JuaN","peppito"))).toDF()
     val expected2 = sc.parallelize(Seq((null, "PePe"),("JuaN","peppito"))).toDF()

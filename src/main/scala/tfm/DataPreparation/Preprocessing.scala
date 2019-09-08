@@ -13,7 +13,7 @@ class Preprocessing {
       val regExp = "[0-9]+"
 
     val dfFinal = df
-      .transform(nullCleaning(column))
+      .transform(nullCleaning(Seq(column)))
       .transform(toLower(column))
       .transform(nLenWordCleaning(column,3))
       .transform(startsWithCleaner(column, regExp))
@@ -36,14 +36,15 @@ class Preprocessing {
   }
 
   /**
-    * Elimina filas de un dataframe que contienen nulos en la columna indicada.
+    * Elimina filas de un dataframe que contienen nulos en las columnas indicada.
     *
     * @param df DataFrame con los datos de entrada.
-    * @param column Columna en la que hay que realizar el reemplazo.
+    * @param columns Columnas en la que hay que realizar el reemplazo.
     * @return El DataFrame con la columna indicada modificada o añadida si no existe.
     */
-  def nullCleaning(column: String)(df: DataFrame):DataFrame={
-    df.filter(col(column).isNotNull)
+  def nullCleaning(columns: Seq[String])(df: DataFrame):DataFrame={
+   // df.filter(col(column).isNotNull) //Son equivalentes
+     df.na.drop(columns)
   }
 
   /**
