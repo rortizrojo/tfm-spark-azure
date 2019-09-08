@@ -8,6 +8,7 @@ node {
 
     stage('Deleting '){
         sh """
+            az login --service-principal -u http://ServicePrincipalJenkins --password ${password} --tenant ${tenant}
             az identity delete --name $identity --resource-group $resourceGroup
             #az hdinsight delete --name $clusterName --resource-group $resourceGroup --yes  
         """
