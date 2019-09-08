@@ -1,12 +1,12 @@
 package tfm
 
 import org.apache.log4j.Logger
+import org.apache.spark.sql.DataFrame
 import org.joda.time.Period
 import org.joda.time.format.DateTimeFormat
 import tfm.DataPreparation.{Cleaning, Filtering, Preprocessing}
 import org.apache.spark.sql.functions.col
 import tfm.config.Config
-import tfm.ML
 import tfm.ML.CountClassifier
 
 
@@ -20,32 +20,19 @@ object Main {
     val logger = Logger.getLogger(this.getClass.getName)
     logger.warn("Inicio de proceso de limpieza")
     val spark = Config.spark
-   // spark.sparkContext.setLogLevel("WARN")
+    spark.sparkContext.setLogLevel("WARN")
 
-    val pathFile = "input/muestraSubido.csv"
-    val dfInput = spark.read
-      .format("com.databricks.spark.csv")
-      .option("inferSchema", true)
-      .option("header", true)
-      .option("delimiter","\t")
-      .csv(pathFile)
-
-    dfInput.printSchema()
-
-    logger.warn("Preprocesado")
+    val dfInput = getInputData(args(0), "\t")
     val dfPreprocessed = new Preprocessing().preprocess(dfInput)
-    logger.warn("Filtrado")
     val dfPreprocessedFiltered = new Filtering().filter(dfPreprocessed)
-    logger.warn("Limpieza")
     val dfPreprocessedFilteredCleaned = new Cleaning().clean(dfPreprocessedFiltered)
+
 
     val Array(trainDf, testDf) = dfPreprocessedFilteredCleaned.randomSplit(Array(0.8, 0.2))
     val model = CountClassifier.train(trainDf)
     CountClassifier.test(model, testDf)
 
     logger.warn(s"Number of partitions: ${dfPreprocessedFilteredCleaned.rdd.getNumPartitions}")
-
-
 
     dfPreprocessedFilteredCleaned
       .coalesce(1)
@@ -60,5 +47,23 @@ object Main {
     val p = new Period(timeStart, timeEnd )
     logger.warn("Total time elapsed: %02d:%02d:%02d.%03d".format(p.getHours, p.getMinutes, p.getSeconds, p.getMillis))
 
+  }
+
+  /**
+    * Devuelve un dataframe a partir de un fichero csv
+    * @param pathFile Ruta HDFS (Azure Data Lake Storage Gen2) al fichero
+    * @return DataFrame con los datos que contiene el csv
+    */
+  def getInputData(pathFile: String, sep: String): DataFrame ={
+
+    val dfInput = tfm.config.Config.spark.read
+      .format("com.databricks.spark.csv")
+      .option("inferSchema", true)
+      .option("header", true)
+      .option("delimiter",sep)
+      .csv(pathFile)
+
+    dfInput.printSchema()
+    dfInput
   }
 }
