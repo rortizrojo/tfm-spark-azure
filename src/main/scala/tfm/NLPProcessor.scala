@@ -106,7 +106,7 @@ class NLPProcessor(columnData:String) extends Serializable {
 
 
   /**
-    * Método que recibe dos listas correspondientes a los tokens y a los tags respectivos y devuelve la senetencia sin apóstrofes
+    * Función que recibe dos listas correspondientes a los tokens y a los tags respectivos y devuelve la senetencia sin apóstrofes
     * @param tokens
     * @param pos_tags
     * @return

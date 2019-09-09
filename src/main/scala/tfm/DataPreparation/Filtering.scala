@@ -5,6 +5,9 @@ import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.expressions.Window
 import org.apache.spark.sql.functions.{col, count}
 
+/**
+  * Clase que realiza sobre un dataframe el filtrado de filas no deseadas
+  */
 class Filtering {
 
   def filter(df:DataFrame): DataFrame ={
