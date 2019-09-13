@@ -4,7 +4,7 @@ import org.apache.log4j.Logger
 import org.apache.spark.SparkConf
 import org.apache.spark.ml.{Pipeline, PipelineModel}
 import org.apache.spark.ml.classification.{LogisticRegression, RandomForestClassifier}
-import org.apache.spark.ml.feature.{CountVectorizer, StringIndexer, Tokenizer}
+import org.apache.spark.ml.feature.{CountVectorizer, HashingTF, IDF, StringIndexer, Tokenizer}
 import org.apache.spark.sql.{DataFrame, Row, SparkSession}
 import org.joda.time.{DateTime, Period}
 
@@ -31,7 +31,10 @@ object CountClassifier {
       new StringIndexer().setInputCol(labeledColumn).setOutputCol("label"), //Primero se convierte la columna de string a double.
       new Tokenizer().setInputCol(columnToClassificate).setOutputCol("tokens"), //Se extraen los tokens de la columna de clasificación
       new CountVectorizer().setInputCol("tokens").setOutputCol("features"), //Se aplica la vectorización de conteo de tokens
+      //new HashingTF().setInputCol("tokens").setOutputCol("rawFeatures").setNumFeatures(20), //Se aplica la vectorización de conteo de tokens
+      //new IDF().setInputCol("rawFeatures").setOutputCol("features"),
       new LogisticRegression().setMaxIter(30).setRegParam(0.001) //Finalmente se aplica una regresión logística con 30 iteraciones y un valor de regularización de 0.001
+      //new RandomForestClassifier().setLabelCol("label").setFeaturesCol("features")
     )
 
     val timeStart = DateTime.now()

@@ -2,40 +2,47 @@ package tfm.DataPreparation
 
 import org.apache.log4j.Logger
 import org.apache.spark.sql.DataFrame
-import org.apache.spark.sql.functions.{col, lower, regexp_replace, udf}
+import org.apache.spark.sql.functions.{col, lower, regexp_replace, udf, trim}
 
 /**
   * Clase que realiza el preproceso de los datos de un dataframe
   */
 class Preprocessing {
 
-  def preprocess(df: DataFrame):DataFrame={
+  def preprocess(df: DataFrame, column:String, column2: String):DataFrame={
 
     val logger = Logger.getLogger(this.getClass.getName)
     logger.warn("Preprocesado")
 
-    val column = "Queries"
-      val regExp = "[0-9]+"
+     val regExp = "[0-9]+"
 
     val dfFinal = df
-      .transform(nullCleaning(Seq(column)))
+      .transform(nullCleaning(Seq(column, column2)))
       .transform(toLower(column))
+      .transform(toLower(column2))
       .transform(nLenWordCleaning(column,3))
+      .transform(nLenWordCleaning(column2,3))
       .transform(startsWithCleaner(column, regExp))
+      .transform(startsWithCleaner(column2, regExp))
       .transform(replacerCleaning(column, regExp, ""))
+      .transform(replacerCleaning(column2, regExp, ""))
       //Reemplazo de puntos por comas en los números decimales para evitar errores en Power BI
-      .transform(replacerCleaning("Max_cpc", "\\.", ","))
-      .transform(replacerCleaning("User_latitude", "\\.", ","))
-      .transform(replacerCleaning("User_longitude", "\\.", ","))
-      .transform(replacerCleaning("Avg_cpc", "\\.", ","))
-      .transform(replacerCleaning("Avg_position", "\\.", ","))
-      .transform(replacerCleaning("Cost_keyword", "\\.", ","))
-      .transform(replacerCleaning("Cost", "\\.", ","))
-      .transform(replacerCleaning("Net_revenue", "\\.", ","))
-      .transform(replacerCleaning("Profit_unitario", "\\.", ","))
-      .transform(replacerCleaning("ROI", "\\.", ","))
+//      .transform(replacerCleaning("Max_cpc", "\\.", ","))
+//      .transform(replacerCleaning("User_latitude", "\\.", ","))
+//      .transform(replacerCleaning("User_longitude", "\\.", ","))
+//      .transform(replacerCleaning("Avg_cpc", "\\.", ","))
+//      .transform(replacerCleaning("Avg_position", "\\.", ","))
+//      .transform(replacerCleaning("Cost_keyword", "\\.", ","))
+//      .transform(replacerCleaning("Cost", "\\.", ","))
+//      .transform(replacerCleaning("Net_revenue", "\\.", ","))
+//      .transform(replacerCleaning("Profit_unitario", "\\.", ","))
+//      .transform(replacerCleaning("ROI", "\\.", ","))
       .transform(regularExprCleaning(column, regExp))
+      .transform(regularExprCleaning(column2, regExp))
       .transform(specialCharCleaning(column))
+      .transform(specialCharCleaning(column2))
+      .transform(trimCleaning(column))
+      .transform(trimCleaning(column2))
 
     dfFinal
   }
@@ -50,6 +57,19 @@ class Preprocessing {
   def nullCleaning(columns: Seq[String])(df: DataFrame):DataFrame={
    // df.filter(col(column).isNotNull) //Son equivalentes
      df.na.drop(columns)
+  }
+
+
+  /**
+    * Elimina espacios al final, al princpio y espacios repetidos en una columna de texto.
+    *
+    * @param df DataFrame con los datos de entrada.
+    * @param column Columna en la que hay que realizar el reemplazo.
+    * @return El DataFrame con la columna indicada modificada o añadida si no existe.
+    */
+  def trimCleaning(column: String)(df: DataFrame):DataFrame={
+    df.withColumn(column, trim(col(column)))
+      .withColumn(column, regexp_replace(col(column), "\\s\\s+", " "))
   }
 
   /**

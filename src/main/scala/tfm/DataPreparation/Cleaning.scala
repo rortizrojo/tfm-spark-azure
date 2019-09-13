@@ -15,12 +15,12 @@ case class Slang(Slang: String, Meaning: String)
   */
 class Cleaning extends Serializable {
 
-  def clean(df: DataFrame): DataFrame = {
+  def clean(df: DataFrame, column: String): DataFrame = {
 
     val logger = Logger.getLogger(this.getClass.getName)
     logger.warn("Limpieza")
 
-    val column = "Queries"
+
     val charList = List('ç', 'ñ')
     val wordList = List("good","bad")
     val expressionList = List("good bye","bad", "friend")

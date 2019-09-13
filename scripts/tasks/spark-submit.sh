@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-ficheroInput=$1
+
+ficheroInput=input/`cut -d' ' -f1 <<<$1`
+spark_submit_args = input/$1
 
 cluster_info=`az hdinsight list --resource-group  grupoRecursosTfm`
 cluster_name=`echo $cluster_info | jq -r ".[0].name"`
@@ -35,9 +37,9 @@ commandDeleteFolder="rm -rf resources/"
 
 commandCreateInputFolder1="hdfs dfs -mkdir /user/sshuser"
 commandCreateInputFolder2="hdfs dfs -mkdir /user/sshuser/input"
-command="hdfs dfs -cp ${DATA_LAKE_MAIN_PATH}input/$ficheroInput input/$ficheroInput"
+command="hdfs dfs -cp ${DATA_LAKE_MAIN_PATH}$ficheroInput $ficheroInput"
 commandCopyResources="hdfs dfs -put resources resources"
-commandExecuteSparkSubmit="spark-submit --conf spark.yarn.maxAppAttempts=1 --driver-memory 10g --num-executors 3 --executor-memory 15g --executor-cores 4 --master yarn --deploy-mode cluster --class tfm.Main cleaning_lib.jar input/$ficheroInput"
+commandExecuteSparkSubmit="spark-submit --conf spark.yarn.maxAppAttempts=1 --driver-memory 10g --num-executors 3 --executor-memory 15g --executor-cores 4 --master yarn --deploy-mode cluster --class tfm.Main cleaning_lib.jar $spark_submit_args"
 #commandExecuteSparkSubmit="echo \"testing\""
 
 echo "SSH Hostname: $sshHostName"

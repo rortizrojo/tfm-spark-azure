@@ -10,11 +10,9 @@ import org.apache.spark.sql.functions.{col, count}
   */
 class Filtering {
 
-  def filter(df:DataFrame): DataFrame ={
+  def filter(df:DataFrame, column : String): DataFrame ={
     val logger = Logger.getLogger(this.getClass.getName)
     logger.warn("Filtrado")
-
-    val column = "Queries"
 
     //Elegir uno de los dos siguientes algoritmos, no los dos
     df

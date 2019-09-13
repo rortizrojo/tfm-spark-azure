@@ -6,9 +6,10 @@ import org.apache.spark.sql.DataFrame
 import org.joda.time.Period
 import org.joda.time.format.DateTimeFormat
 import tfm.DataPreparation.{Cleaning, Filtering, Preprocessing}
-import org.apache.spark.sql.functions.col
+import org.apache.spark.sql.functions.{col, monotonically_increasing_id}
 import tfm.config.Config
 import tfm.ML.CountClassifier
+import tfm.ML.SimilartyCalculation
 
 
 object Main {
@@ -21,18 +22,35 @@ object Main {
     val spark = Config.spark
     spark.sparkContext.setLogLevel("WARN")
 
+    //val column = "Queries"
+    val columnQuery = args(2)//"Query"
+    val columnKeyword = args(3)//"Keyword"
+    val categoria = args(4)//"CatCorrecta"
 
-    val dfInput = getInputData(args(0), "\t")
+    //val dfInput = getInputData(args(0), "\t")
+    val dfInput = getInputData(args(0), args(1))
+        .select("ID", categoria, columnQuery, columnKeyword)
+        .sample(0.3)
 
+
+    logger.warn("Filas leídas: " + dfInput.count())
     /** Cleaning, Filtering, Preprocessing **/
     logger.warn("Inicio de proceso de limpieza")
-    val dfPreprocessed = new Preprocessing().preprocess(dfInput)
-    val dfPreprocessedFiltered = new Filtering().filter(dfPreprocessed)
-    val dfPreprocessedFilteredCleaned = new Cleaning().clean(dfPreprocessedFiltered)
+    val dfPreprocessed = new Preprocessing().preprocess(dfInput,columnQuery, columnKeyword)
+    val dfPreprocessedFiltered = new Filtering().filter(dfPreprocessed, columnQuery)
+    val dfPreprocessedFilteredCleaned = new Cleaning().clean(dfPreprocessedFiltered, columnQuery)
 
-    /** Machine Learning **/
-    val model = trainModel(dfPreprocessedFilteredCleaned, "Keyword_match_type", "Queries")
-    val dfOutput = model.transform(dfPreprocessedFilteredCleaned)
+//    /** Machine Learning - Clasificación  **/
+    ////    val dfClassified = trainModel(dfPreprocessedFilteredCleaned, "Keyword_match_type", "Queries")
+    ////
+    ////    /** Machine Learning - Similitud entre columnas  **/
+    ////    val dfOutput = new SimilartyCalculation().calculateSimilarity(dfClassified, dfClassified,  "Queries", "Keyword" )
+
+    /** Machine Learning - Clasificación  **/
+    val dfClassified = trainModel(dfPreprocessedFilteredCleaned, categoria, columnQuery)
+
+    /** Machine Learning - Similitud entre columnas  **/
+    val dfOutput = new SimilartyCalculation().calculateSimilarity(dfClassified, dfClassified,  columnQuery, columnKeyword )
 
     logger.warn(s"Number of partitions: ${dfOutput.rdd.getNumPartitions}")
 
@@ -52,18 +70,18 @@ object Main {
   }
 
   /**
-    * Función que realiza el entrenaminento de un modelo con la clase CountClassifier y la prueba del modelo
+    * Función que clasifica textos entrenando un modelo con la clase CountClassifier y la prueba del modelo
     *
     * @param dfData Dataframe para realizar el entrenamiento y el test
     * @param columnToTrain Columna de clasificación o etiquetada
     * @param columnToClassificate
     * @return
     */
-  def trainModel(dfData: DataFrame, columnToTrain: String, columnToClassificate: String): PipelineModel ={
+  def trainModel(dfData: DataFrame, columnToTrain: String, columnToClassificate: String): DataFrame ={
     val Array(trainDf, testDf) = dfData.randomSplit(Array(0.8, 0.2))
     val model = CountClassifier.train(trainDf,columnToTrain,  columnToClassificate)
     CountClassifier.test(model, testDf)
-    model
+    model.transform(dfData).drop("tokens", "features", "rawPrediction", "probability")
   }
 
   /**
@@ -79,8 +97,14 @@ object Main {
       .option("header", true)
       .option("delimiter",sep)
       .csv(pathFile)
+      .withColumn("ID", monotonically_increasing_id)
 
     dfInput.printSchema()
     dfInput
+  }
+
+
+  def calculateSimilarity(df: DataFrame,keywordsColumn: String,labeledColumn:String, columnToClassificate: String ): Unit ={
+
   }
 }
