@@ -2,7 +2,7 @@
 
 
 ficheroInput=input/`cut -d' ' -f1 <<<$1`
-spark_submit_args = input/$1
+spark_submit_args=input/$1
 
 cluster_info=`az hdinsight list --resource-group  grupoRecursosTfm`
 cluster_name=`echo $cluster_info | jq -r ".[0].name"`
