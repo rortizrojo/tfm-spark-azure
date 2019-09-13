@@ -23,7 +23,7 @@ node {
     stage('Subida de ficheros') {
         sh """
             az login --service-principal -u http://ServicePrincipalJenkins --password ${password} --tenant ${tenant}
-            bash ./scripts/tasks/spark-submit.sh $parametros_spark_submit
+            bash ./scripts/tasks/spark-submit.sh "$parametros_spark_submit"
         """
     }
     stage('Results') {
