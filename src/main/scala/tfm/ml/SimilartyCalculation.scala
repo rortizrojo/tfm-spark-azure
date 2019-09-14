@@ -1,4 +1,4 @@
-package tfm.ML
+package tfm.ml
 
 import breeze.linalg.{DenseVector => BDV}
 import org.apache.spark.ml.{Pipeline, PipelineModel}

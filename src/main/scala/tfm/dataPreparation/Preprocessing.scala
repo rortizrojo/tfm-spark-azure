@@ -1,4 +1,4 @@
-package tfm.DataPreparation
+package tfm.dataPreparation
 
 import org.apache.log4j.Logger
 import org.apache.spark.sql.DataFrame

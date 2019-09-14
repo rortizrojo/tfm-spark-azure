@@ -1,4 +1,4 @@
-package tfm.DataPreparation
+package tfm.dataPreparation
 
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
 import org.junit.runner.RunWith

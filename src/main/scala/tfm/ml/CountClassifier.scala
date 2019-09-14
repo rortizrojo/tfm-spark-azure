@@ -1,4 +1,4 @@
-package tfm.ML
+package tfm.ml
 
 import org.apache.log4j.Logger
 import org.apache.spark.SparkConf

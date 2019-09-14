@@ -27,11 +27,9 @@ node {
         """
     }
     stage('Results') {
-        if(skipTest == 'false'){
+        if (skipTest == 'false') {
             junit '**/target/surefire-reports/TEST-*.xml'
-            //archiveArtifacts 'target/*.jar'
         }
-
     }
 }
 

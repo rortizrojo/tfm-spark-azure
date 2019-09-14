@@ -1,12 +1,13 @@
-package tfm
+package tfm.dataPreparation.utils
 
 import com.johnsnowlabs.nlp.DocumentAssembler
 import com.johnsnowlabs.nlp.annotator.{PerceptronModel, SentenceDetector, Tokenizer}
 import com.johnsnowlabs.util.Benchmark
 import org.apache.log4j.Logger
 import org.apache.spark.ml.Pipeline
-import org.apache.spark.sql.{DataFrame, Dataset, Row, SparkSession}
 import org.apache.spark.sql.functions.{col, udf}
+import org.apache.spark.sql.{DataFrame, Row}
+import tfm.config
 
 import scala.collection.mutable
 
@@ -48,11 +49,7 @@ class NLPProcessor(columnData:String) extends Serializable {
       posTagger
     ))
 
-
-  val model = Benchmark.time("Time to train Perceptron Model") {
-    pipeline.fit(Seq.empty[String].toDF(columnData))
-  }
-
+  val model = pipeline.fit(Seq.empty[String].toDF(columnData))
 
   def transform(data:DataFrame): DataFrame ={
     val path = "resources/apostrophe_dict.csv"

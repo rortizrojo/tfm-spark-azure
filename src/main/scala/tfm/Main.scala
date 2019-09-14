@@ -5,11 +5,11 @@ import org.apache.spark.ml.PipelineModel
 import org.apache.spark.sql.DataFrame
 import org.joda.time.Period
 import org.joda.time.format.DateTimeFormat
-import tfm.DataPreparation.{Cleaning, Filtering, Preprocessing}
+import tfm.dataPreparation.{Cleaning, Filtering, Preprocessing}
 import org.apache.spark.sql.functions.{col, monotonically_increasing_id}
 import tfm.config.Config
-import tfm.ML.CountClassifier
-import tfm.ML.SimilartyCalculation
+import tfm.ml.CountClassifier
+import tfm.ml.SimilartyCalculation
 
 
 object Main {
@@ -22,12 +22,10 @@ object Main {
     val spark = Config.spark
     spark.sparkContext.setLogLevel("WARN")
 
-    //val column = "Queries"
     val columnQuery = args(2)//"Query"
     val columnKeyword = args(3)//"Keyword"
-    val categoria = args(4)//"CatCorrecta"
+    val categoria = args(4)//"Categoría"
 
-    //val dfInput = getInputData(args(0), "\t")
     val dfInput = getInputData(args(0), args(1))
         .select("ID", categoria, columnQuery, columnKeyword)
         //.sample(0.3)
@@ -39,12 +37,6 @@ object Main {
     val dfPreprocessed = new Preprocessing().preprocess(dfInput,columnQuery, columnKeyword)
     val dfPreprocessedFiltered = new Filtering().filter(dfPreprocessed, columnQuery)
     val dfPreprocessedFilteredCleaned = new Cleaning().clean(dfPreprocessedFiltered, columnQuery)
-
-//    /** Machine Learning - Clasificación  **/
-    ////    val dfClassified = trainModel(dfPreprocessedFilteredCleaned, "Keyword_match_type", "Queries")
-    ////
-    ////    /** Machine Learning - Similitud entre columnas  **/
-    ////    val dfOutput = new SimilartyCalculation().calculateSimilarity(dfClassified, dfClassified,  "Queries", "Keyword" )
 
     /** Machine Learning - Clasificación  **/
     val dfClassified = trainModel(dfPreprocessedFilteredCleaned, categoria, columnQuery)

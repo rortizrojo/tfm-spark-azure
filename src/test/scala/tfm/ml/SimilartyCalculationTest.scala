@@ -1,4 +1,4 @@
-package tfm.ML
+package tfm.ml
 
 import com.holdenkarau.spark.testing.DataFrameSuiteBase
 import org.apache.spark.sql.functions.monotonically_increasing_id

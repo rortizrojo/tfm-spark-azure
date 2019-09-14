@@ -1,9 +1,9 @@
-package tfm.DataPreparation
+package tfm.dataPreparation
 
 import org.apache.log4j.Logger
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.functions.{col, regexp_replace, udf}
-import tfm.NLPProcessor
+import tfm.dataPreparation.utils.NLPProcessor
 import tfm.config
 
 import scala.util.matching.Regex
