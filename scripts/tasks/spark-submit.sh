@@ -35,7 +35,7 @@ commandCreateInputFolder1="hdfs dfs -mkdir /user/sshuser"
 commandCreateInputFolder2="hdfs dfs -mkdir /user/sshuser/input"
 commandCopyResources="hdfs dfs -put resources resources"
 command="hdfs dfs -cp ${DATA_LAKE_MAIN_PATH}$ficheroInput $ficheroInput"
-commandExecuteSparkSubmit="spark-submit --conf spark.yarn.maxAppAttempts=1 --master yarn --deploy-mode cluster --class tfm.Main cleaning_lib.jar $spark_submit_args"
+commandExecuteSparkSubmit="spark-submit --conf spark.yarn.maxAppAttempts=1 --num-executors 4 --executor-memory 50g --executor-cores 8 --master yarn --deploy-mode cluster --class tfm.Main cleaning_lib.jar $spark_submit_args"
 # El comando para eliminar la carpeta resources se ejecuta al final del proceso para que en la siguiente ejecución con la meta recursivamente
 commandDeleteFolder="rm -rf resources/"
 
