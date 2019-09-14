@@ -41,7 +41,7 @@ def modify(args):
         # Cluster worker node number
         data['parameters']['clusterWorkerNodeCount']['value']=int(args.worker_node_instances)
         # SSH password
-         data['parameters']['sshPassword']['value']=args.sshPassword
+        data['parameters']['sshPassword']['value']=args.sshPassword
 
         f.seek(0)        # <--- should reset file position to the beginning.
         json.dump(data, f, indent=4)
