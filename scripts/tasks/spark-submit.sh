@@ -13,7 +13,6 @@ pathAccount=`echo $cluster_info | jq -r ".[0].properties.storageProfile.storagea
 container=`echo $cluster_info | jq -r ".[0].properties.storageProfile.storageaccounts[0].fileSystem"`
 workerNodeSize=`echo $cluster_info | jq -r ".[0].properties.computeProfile.roles[1].hardwareProfile.vmSize"`
 workerInstances=`echo $cluster_info | jq -r ".[0].properties.computeProfile.roles[1].targetInstanceCount"`
-workerNodeSize="standard_d14_v2"
 
 case "$workerNodeSize" in
    "standard_d12_v2")
