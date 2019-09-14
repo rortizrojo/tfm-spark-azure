@@ -37,7 +37,7 @@ class SimilartyCalculation {
     val dfReduced = dfTrain.select("ID", column)
     val stages = Array(
       new Tokenizer().setInputCol(column).setOutputCol("tokens"), //Se extraen los tokens de la columna de clasificación
-      new HashingTF().setInputCol("tokens").setOutputCol("rawFeatures").setNumFeatures(20), //Se aplica la vectorización de conteo de tokens
+      new HashingTF().setInputCol("tokens").setOutputCol("rawFeatures").setNumFeatures(20),
       new IDF().setInputCol("rawFeatures").setOutputCol("features"),
       new Normalizer().setInputCol("features").setOutputCol("normFeatures" + column)
     )

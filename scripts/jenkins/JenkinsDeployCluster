@@ -2,7 +2,7 @@ node {
     //def id_suscripcion = '5a08e9e0-83ee-4188-8fc2-18e16c7db524'
     def nombre_despliegue = 'despliegueCluster'
     try{
-        stage('Preparation') { // for display purposes
+        stage('Preparation') {
             git branch: 'master',
                     credentialsId: 'gitlab-credentials',
                     url: 'https://gitlab.com/rortizrojo/tfm-spark-azure.git'
@@ -27,6 +27,7 @@ node {
             idStorageResource=`cat cluster/storage/resourceId | jq -r ".properties.outputResources[0].id"`
             python3 modifyClusterTemplate.py \\
                 -n $nombre_cluster \\
+                -sshPass $sshPassword \\
                 -ctf cluster/deployment/template.json \\
                 -cpf cluster/deployment/parameters.json \\
                 -uai \$identity \\

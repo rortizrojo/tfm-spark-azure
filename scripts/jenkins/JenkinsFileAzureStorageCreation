@@ -5,7 +5,7 @@ node {
                 credentialsId: 'gitlab-credentials',
                 url: 'https://gitlab.com/rortizrojo/tfm-spark-azure.git'
     }
-    stage('Subida de fichero'){
+    stage('Creación del contenedor'){
         sh """
             cd scripts/azure/
             python3 modifyStorageParameters.py -sf storage/parameters.json -sn $nombre_cuenta

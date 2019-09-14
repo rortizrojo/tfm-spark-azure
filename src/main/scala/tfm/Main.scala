@@ -73,13 +73,14 @@ object Main {
     * Función que clasifica textos entrenando un modelo con la clase CountClassifier y la prueba del modelo
     *
     * @param dfData Dataframe para realizar el entrenamiento y el test
-    * @param columnToTrain Columna de clasificación o etiquetada
-    * @param columnToClassificate
-    * @return
+    * @param columnCategory Columna de clasificación o categoría
+    * @param columnFeatures Columna de features o características
+    * @return El dataframe de entrada con la columna prediction, y label. Que son la columna de predicción de categoría
+    *         y la columa real de la categoría transformada a número
     */
-  def trainModel(dfData: DataFrame, columnToTrain: String, columnToClassificate: String): DataFrame ={
+  def trainModel(dfData: DataFrame, columnCategory: String, columnFeatures: String): DataFrame ={
     val Array(trainDf, testDf) = dfData.randomSplit(Array(0.8, 0.2))
-    val model = CountClassifier.train(trainDf,columnToTrain,  columnToClassificate)
+    val model = CountClassifier.train(trainDf,columnCategory,  columnFeatures)
     CountClassifier.test(model, testDf)
     model.transform(dfData).drop("tokens", "features", "rawPrediction", "probability")
   }
@@ -104,7 +105,4 @@ object Main {
   }
 
 
-  def calculateSimilarity(df: DataFrame,keywordsColumn: String,labeledColumn:String, columnToClassificate: String ): Unit ={
-
-  }
 }

@@ -40,6 +40,8 @@ def modify(args):
         data['parameters']['clusterName']['value']=args.name
         # Cluster worker node number
         data['parameters']['clusterWorkerNodeCount']['value']=int(args.worker_node_instances)
+        # SSH password
+         data['parameters']['sshPassword']['value']=args.sshPassword
 
         f.seek(0)        # <--- should reset file position to the beginning.
         json.dump(data, f, indent=4)
@@ -55,6 +57,7 @@ if __name__ == '__main__':
     parser.add_argument('-sn', '--storageName')
     parser.add_argument('-c', '--container')
     parser.add_argument('-n', '--name')
+    parser.add_argument('-sshPass', '--sshPassword')
     parser.add_argument('-hnt', '--head_node_type')
     parser.add_argument('-wnt', '--worker_node_type')
     parser.add_argument('-hni', '--head_node_instances')
