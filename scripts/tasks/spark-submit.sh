@@ -16,15 +16,15 @@ workerInstances=`echo $cluster_info | jq -r ".[0].properties.computeProfile.role
 
 case "$workerNodeSize" in
    "standard_d12_v2")
-        ram="22"
+        ram="22g"
         cores="4"
    ;;
    "standard_d13_v2")
-        ram="45"
+        ram="45g"
         cores="8"
    ;;
    "standard_d14_v2")
-        ram="90"
+        ram="90g"
         cores="16"
    ;;
 
