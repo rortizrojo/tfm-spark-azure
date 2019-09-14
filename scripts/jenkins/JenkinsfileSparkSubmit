@@ -23,7 +23,7 @@ node {
     stage('Spark-submit (run)') {
         sh """
             az login --service-principal -u http://ServicePrincipalJenkins --password ${password} --tenant ${tenant}
-            bash ./scripts/tasks/spark-submit.sh "$parametros_spark_submit" $sshPassword
+            bash ./scripts/tasks/spark-submit.sh $grupo_recursos "$parametros_spark_submit" $sshPassword
         """
     }
     stage('Results') {

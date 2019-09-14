@@ -1,15 +1,40 @@
 #!/usr/bin/env bash
 
+grupo_recursos=$1
+ficheroInput=input/`cut -d' ' -f1 <<<$2`
+spark_submit_args=input/$2
+sshPassword=$3
 
-ficheroInput=input/`cut -d' ' -f1 <<<$1`
-spark_submit_args=input/$1
-sshPassword=$2
 
-cluster_info=`az hdinsight list --resource-group  grupoRecursosTfm`
+cluster_info=`az hdinsight list --resource-group $grupo_recursos`
 cluster_name=`echo $cluster_info | jq -r ".[0].name"`
 sshUser=`echo $cluster_info | jq -r ".[0].properties.computeProfile.roles[0].osProfile.linuxOperatingSystemProfile.username"`
 pathAccount=`echo $cluster_info | jq -r ".[0].properties.storageProfile.storageaccounts[0].name"`
 container=`echo $cluster_info | jq -r ".[0].properties.storageProfile.storageaccounts[0].fileSystem"`
+workerNodeSize=`echo $cluster_info | jq -r ".[0].properties.computeProfile.roles[1].hardwareProfile.vmSize"`
+workerInstances=`echo $cluster_info | jq -r ".[0].properties.computeProfile.roles[1].targetInstanceCount"`
+workerNodeSize="standard_d14_v2"
+
+case "$workerNodeSize" in
+   "standard_d12_v2")
+        ram="22"
+        cores="4"
+   ;;
+   "standard_d13_v2")
+        ram="45"
+        cores="8"
+   ;;
+   "standard_d14_v2")
+        ram="90"
+        cores="16"
+   ;;
+
+esac
+echo $ram
+
+
+
+
 DATA_LAKE_MAIN_PATH=abfs://${container}@${pathAccount}/
 sshHostName=${sshUser}@${cluster_name}-ssh.azurehdinsight.net
 
@@ -35,7 +60,7 @@ commandCreateInputFolder1="hdfs dfs -mkdir /user/sshuser"
 commandCreateInputFolder2="hdfs dfs -mkdir /user/sshuser/input"
 commandCopyResources="hdfs dfs -put resources resources"
 command="hdfs dfs -cp ${DATA_LAKE_MAIN_PATH}$ficheroInput $ficheroInput"
-commandExecuteSparkSubmit="spark-submit --conf spark.yarn.maxAppAttempts=1 --num-executors 4 --executor-memory 50g --executor-cores 8 --master yarn --deploy-mode cluster --class tfm.Main cleaning_lib.jar $spark_submit_args"
+commandExecuteSparkSubmit="spark-submit --conf spark.yarn.maxAppAttempts=1 --num-executors $workerInstances --executor-memory $ram --executor-cores $cores --master yarn --deploy-mode cluster --class tfm.Main cleaning_lib.jar $spark_submit_args"
 # El comando para eliminar la carpeta resources se ejecuta al final del proceso para que en la siguiente ejecución con la meta recursivamente
 commandDeleteFolder="rm -rf resources/"
 
