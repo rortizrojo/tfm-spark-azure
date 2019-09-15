@@ -28,7 +28,7 @@ object Main {
 
     val dfInput = getInputData(args(0), args(1))
         .select("ID", categoria, columnQuery, columnKeyword)
-        .sample(0.3)
+        //.sample(0.3)
 
 
     logger.warn("Filas leídas: " + dfInput.count())
