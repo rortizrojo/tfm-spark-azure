@@ -29,10 +29,6 @@ case "$workerNodeSize" in
    ;;
 
 esac
-echo $ram
-
-
-
 
 DATA_LAKE_MAIN_PATH=abfs://${container}@${pathAccount}/
 sshHostName=${sshUser}@${cluster_name}-ssh.azurehdinsight.net
