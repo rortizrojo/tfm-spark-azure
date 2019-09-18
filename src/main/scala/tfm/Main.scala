@@ -27,7 +27,7 @@ object Main {
     val categoria = args(4)//"Categoría"
 
     val dfInput = getInputData(args(0), args(1))
-        .select("ID", categoria, columnQuery, columnKeyword)
+        //.select("ID", categoria, columnQuery, columnKeyword)
         //.sample(0.3)
 
 
